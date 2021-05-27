@@ -25,7 +25,8 @@ services:
     image: postgres:13-alpine
     container_name: script-db
     ports:
-      - "5432:5432"
+      - "7003:7003"
+    command: -p 7003
     environment:
       - DEBUG=false
       - POSTGRES_USER=admin

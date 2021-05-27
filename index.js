@@ -34,7 +34,7 @@ const dbclient = new Client({
     database: 'script-db',
     user: 'admin',
     password: 'admin',
-    port: 5432,
+    port: 7003,
 });
 
 dbclient.connect(err => {
@@ -48,7 +48,7 @@ dbclient.connect(err => {
 
 const query = `
 INSERT INTO messages (message_id, message)
-VALUES (42, 'testmessage')
+VALUES (43, 'testmessage')
 `;
 
 console.log("vor db insert")
