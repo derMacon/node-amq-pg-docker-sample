@@ -1,5 +1,10 @@
-import { Foo } from './testmodule';
+// import * as dotenv from "dotenv";
+import { AmqService } from './connection/AmqService';
 
-var foo = new Foo();
+require('dotenv').config();
 
-foo.testFunct("testinput2");
+const messages: string[] = [];
+
+
+new AmqService("test").connectBroker(messages);
+
