@@ -35,6 +35,11 @@ services:
     volumes:
       - script-db:/var/lib/postgresql/data
     restart: unless-stopped
+  
+  node-consumer:
+    image: node-consumer
+    container_name: node-consumer
+    restart: unless-stopped
 
 volumes:
   script-db:
