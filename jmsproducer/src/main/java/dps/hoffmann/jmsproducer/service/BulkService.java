@@ -2,17 +2,14 @@ package dps.hoffmann.jmsproducer.service;
 
 import dps.hoffmann.jmsproducer.model.MessageWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.stream.Collectors;
 
@@ -39,7 +36,7 @@ public class BulkService {
     private String createSampleXmlMessage() {
         String content = "";
 
-        try (InputStream inputStream = getClass().getResourceAsStream("/docs/sample-payment.xml");
+        try (InputStream inputStream = getClass().getResourceAsStream(xmlResourceName);
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             content = reader.lines()
                     .collect(Collectors.joining(System.lineSeparator()));
