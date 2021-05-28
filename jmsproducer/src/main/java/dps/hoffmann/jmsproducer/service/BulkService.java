@@ -7,16 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class BulkService {
 
-    @Value("${sample.xml-res}")
+    @Value("${sample.xmlres}")
     private String xmlResourceName;
 
     @Autowired
@@ -33,15 +37,16 @@ public class BulkService {
     }
 
     private String createSampleXmlMessage() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File sampleXml = new File(classLoader.getResource(xmlResourceName).getFile());
-
         String content = "";
-        try {
-            content = FileUtils.readFileToString(sampleXml, StandardCharsets.UTF_8);
+
+        try (InputStream inputStream = getClass().getResourceAsStream("/docs/sample-payment.xml");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            content = reader.lines()
+                    .collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return content;
     }
 
