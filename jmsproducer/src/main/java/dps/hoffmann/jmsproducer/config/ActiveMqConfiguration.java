@@ -45,13 +45,7 @@ public class ActiveMqConfiguration {
                 senderActiveMQConnectionFactory());
     }
 
-    @Bean
-    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(
-            ConnectionFactory connectionFactory) {
-        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory);
-        return factory;
-    }
+
 
     /**
      * Provides the jms template instance
@@ -59,11 +53,34 @@ public class ActiveMqConfiguration {
      * the option from the template must be set to session transacted
      * @return jms template instance
      */
-    @Bean
-    public JmsTemplate jmsTemplate() {
+    @Bean(name="queueTemplate")
+    public JmsTemplate queueTemplate() {
         JmsTemplate jmsTemplate = new JmsTemplate();
         jmsTemplate.setConnectionFactory(cachingConnectionFactory());
         return jmsTemplate;
     }
+
+
+
+
+
+
+    @Bean
+    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(
+            ConnectionFactory connectionFactory) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setPubSubDomain(true);
+        factory.setConnectionFactory(connectionFactory);
+        return factory;
+    }
+
+    @Bean(name="topicTemplate")
+    public JmsTemplate topicTemplate() {
+        JmsTemplate jmsTemplate = new JmsTemplate();
+        jmsTemplate.setConnectionFactory(cachingConnectionFactory());
+        jmsTemplate.setPubSubDomain(true);
+        return jmsTemplate;
+    }
+
 
 }

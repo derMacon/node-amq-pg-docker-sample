@@ -21,7 +21,7 @@ public class BulkService {
     private String xmlResourceName;
 
     @Autowired
-    private JmsQueueService jmsQueueService;
+    private AmqService amqService;
 
     public void createBulkSamplePayment(int messageCnt, int timePeriod) {
         // todo timeperiod...
@@ -29,7 +29,7 @@ public class BulkService {
         String sampleXmlContent = createSampleXmlMessage();
         for (int i = 0; i < messageCnt; i++) {
             MessageWrapper wrapper = new MessageWrapper(sampleXmlContent, new Timestamp(System.currentTimeMillis()));
-            jmsQueueService.sendObjPaymentQueueMessage(wrapper);
+            amqService.sendObjPaymentQueueMessage(wrapper);
         }
     }
 

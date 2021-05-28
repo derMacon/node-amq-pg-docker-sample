@@ -6,6 +6,7 @@ import dps.hoffmann.jmsproducer.model.MessageWrapper;
 import dps.hoffmann.jmsproducer.properties.ActivemqProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,10 @@ import javax.jms.Session;
 
 @Service
 @Slf4j
-public class JmsQueueService {
+public class AmqService {
 
     @Autowired
+    @Qualifier("queueTemplate")
     JmsTemplate jmsTemplate;
 
     @Autowired

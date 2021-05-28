@@ -1,7 +1,7 @@
 package dps.hoffmann.jmsproducer.controller;
 
 import dps.hoffmann.jmsproducer.service.BulkService;
-import dps.hoffmann.jmsproducer.service.JmsQueueService;
+import dps.hoffmann.jmsproducer.service.AmqService;
 import dps.hoffmann.jmsproducer.utils.NameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiController {
 
     @Autowired
-    private JmsQueueService jmsQueueService;
+    private AmqService amqService;
 
     @Autowired
     private BulkService bulkMessengerService;
@@ -26,7 +26,7 @@ public class ApiController {
     @RequestMapping("/gen-txt-message")
     public String generateMessage() {
         String txtMessage = NameGenerator.generateTestMessage();
-        jmsQueueService.sendTxtPaymentQueueMessage(txtMessage);
+        amqService.sendTxtPaymentQueueMessage(txtMessage);
         return txtMessage;
     }
 

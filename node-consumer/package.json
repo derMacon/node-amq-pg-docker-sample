@@ -24,7 +24,8 @@
     "ini": "^2.0.0",
     "pg": "^8.6.0",
     "stomp-client": "^0.9.0",
-    "typescript": "^4.3.2"
+    "typescript": "^4.3.2",
+    "xsd-schema-validator": "^0.7.0"
   },
   "devDependencies": {
     "@types/ini": "^1.3.30"
