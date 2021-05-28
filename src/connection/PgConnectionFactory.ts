@@ -11,7 +11,13 @@ export abstract class PgConnectionFactory {
 			port: Number(process.env.PG_DATABASE_PORT),
 		});
 
-		console.log("dbClient: ", dbclient);
+		console.log("env:");
+		console.log(process.env.DC_TEST);
+		console.log(process.env.PG_HOSTNAME);
+		console.log(process.env.PG_DATABASE_NAME);
+		console.log(process.env.PG_USER_NAME);
+		console.log(process.env.PG_USER_PASSWORD);
+		console.log(Number(process.env.PG_DATABASE_PORT));
 
 		dbclient.connect(err => {
 			if (err) {
