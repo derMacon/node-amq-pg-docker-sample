@@ -1,13 +1,19 @@
-// import * as dotenv from "dotenv";
-import * as PgDriver from 'pg';
-
-import { AmqService } from './connection/AmqService';
-import { PgConnectionFactory } from './connection/PgConnectionFactory';
+import { MessageWrapper } from './model/MessageWrapper';
+import { AmqService } from './service/AmqService';
+import { PersistenceService } from './service/PersistenceService';
+import { WorkerService } from './service/WorkerService';
+import { ElementExtractor } from './utils/ElementExtractor';
+import { XsdChecker } from './utils/XsdChecker';
 
 require('dotenv').config();
 
-const messages: string[] = [];
+const messages: MessageWrapper[] = [];
 
-let dbClient: PgDriver.Client = PgConnectionFactory.createConnection();
-new AmqService(dbClient).connectBroker(messages);
+let workerService: WorkerService = new WorkerService(
+	new ElementExtractor(),
+	new XsdChecker(),
+	new PersistenceService()
+);
+
+new AmqService(workerService).connectBroker();
 

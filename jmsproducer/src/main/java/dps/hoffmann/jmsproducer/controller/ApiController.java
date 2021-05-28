@@ -26,7 +26,7 @@ public class ApiController {
     @RequestMapping("/gen-txt-message")
     public String generateMessage() {
         String txtMessage = NameGenerator.generateTestMessage();
-        jmsQueueService.sendTxtMessage(txtMessage);
+        jmsQueueService.sendTxtPaymentQueueMessage(txtMessage);
         return txtMessage;
     }
 

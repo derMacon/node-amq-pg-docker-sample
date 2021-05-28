@@ -1,5 +1,7 @@
 package dps.hoffmann.jmsproducer.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dps.hoffmann.jmsproducer.model.MessageWrapper;
 import dps.hoffmann.jmsproducer.properties.ActivemqProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +24,21 @@ public class JmsQueueService {
     @Autowired
     private ActivemqProperties activemqProperties;
 
-    public void sendObjMessage(String message, String destination) {
-        log.info("new message: {}", message);
-        jmsTemplate.convertAndSend(destination, new MessageWrapper(message));
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    public void sendObjPaymentQueueMessage(MessageWrapper wrapper) {
+        String convertedJson = "";
+        try {
+            convertedJson = objectMapper.writeValueAsString(wrapper);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        log.info("converted to json: {}", convertedJson);
+        sendTxtPaymentQueueMessage(convertedJson);
     }
 
-    public void sendTxtMessage(String message) {
+    public void sendTxtPaymentQueueMessage(String message) {
         log.info("new txt message: {}", message);
         jmsTemplate.send(activemqProperties.getQueue(), new MessageCreator() {
             @Override

@@ -1,5 +1,6 @@
 package dps.hoffmann.jmsproducer.service;
 
+import dps.hoffmann.jmsproducer.model.MessageWrapper;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +23,8 @@ public class BulkService {
         // todo timeperiod...
         String sampleXmlContent = createSampleXmlMessage();
         for (int i = 0; i < messageCnt; i++) {
-            jmsQueueService.sendTxtMessage(sampleXmlContent);
+            MessageWrapper wrapper = new MessageWrapper(sampleXmlContent);
+            jmsQueueService.sendObjPaymentQueueMessage(wrapper);
         }
     }
 
