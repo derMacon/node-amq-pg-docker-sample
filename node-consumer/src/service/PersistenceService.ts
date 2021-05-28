@@ -24,11 +24,15 @@ export class PersistenceService {
 	}
 
 	saveResult(result: ResultWrapper): void {
-
 		const query = `
-		INSERT INTO messages (message, elem, elem, elem)
-		VALUES ('${result.message}', '${result.extractedElem}')
-		`;
+		INSERT INTO messages (message, elem, sent, received, processed)
+		VALUES (
+			'${result.message}',
+			'${result.extractedElem}',
+			'${this.transformDate(result.sent)}',
+			'${this.transformDate(result.received)}',
+			'${this.transformDate(result.processed)}'
+		);`;
 
 		console.log("query: ", query)
 
@@ -39,6 +43,10 @@ export class PersistenceService {
 			}
 			console.log('Data insert successful');
 		});
+	}
+
+	transformDate(inputDate: Date): string {
+		return inputDate.toLocaleDateString() + " " + inputDate.toLocaleTimeString();
 	}
 
 }

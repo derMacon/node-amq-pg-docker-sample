@@ -1,4 +1,5 @@
 import { MessageWrapper } from "../model/MessageWrapper";
+import { ResultWrapper } from "../model/ResultWrapper";
 import { ElementExtractor } from "../utils/ElementExtractor";
 import { XsdChecker } from "../utils/XsdChecker";
 import { PersistenceService } from './PersistenceService';
@@ -21,8 +22,8 @@ export class WorkerService {
 
 	work(wrapper: MessageWrapper): void {
 		if (this.xsdChecker.checkXml(wrapper.message)) {
-			let elemValue = this.elemExtractor.extract(wrapper.message);
-			this.dbConnector
+			let result: ResultWrapper = this.elemExtractor.extract(wrapper);
+			this.dbConnector.saveResult(result);
 		} else {
 			// todo
 		}

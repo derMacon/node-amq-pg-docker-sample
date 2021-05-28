@@ -16,4 +16,3 @@ let workerService: WorkerService = new WorkerService(
 );
 
 new AmqService(workerService).connectBroker();
-
