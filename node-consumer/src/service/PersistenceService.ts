@@ -1,4 +1,6 @@
 import * as PgDriver from 'pg';
+import * as Xml from 'libxmljs2';
+
 import { ResultWrapper } from '../model/ResultWrapper';
 
 export class PersistenceService {

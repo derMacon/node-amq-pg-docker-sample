@@ -1,15 +1,15 @@
-import { MessageWrapper } from "../model/MessageWrapper";
+import { PaymentMessage } from "../model/PaymentMessage";
 import { ResultWrapper } from "../model/ResultWrapper";
 
 export class ElementExtractor {
 
-	extract(messageWrapper: MessageWrapper): ResultWrapper {
+	extract(messageWrapper: PaymentMessage): ResultWrapper {
 
 		// todo
 		let extractedElem: string = "this is a test";
 
 		return new ResultWrapper(
-			messageWrapper.message,
+			messageWrapper.getMessage(),
 			extractedElem, 
 			new Date(),
 			new Date(),

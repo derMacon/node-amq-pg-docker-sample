@@ -1,5 +1,6 @@
-import { MessageWrapper } from "../model/MessageWrapper";
+import { PaymentMessage } from "../model/PaymentMessage";
 import { ResultWrapper } from "../model/ResultWrapper";
+import { Specification } from "../model/Specification";
 import { ElementExtractor } from "../utils/ElementExtractor";
 import { XsdChecker } from "../utils/XsdChecker";
 import { PersistenceService } from './PersistenceService';
@@ -20,13 +21,13 @@ export class WorkerService {
 		this.dbConnector = dbConnector;
 	}
 
-	updateSpecification(xsdContent: string) {
-		this.xsdChecker.setXsdSpecification(xsdContent);
+	updateSpecification(specification: Specification) {
+		this.xsdChecker.addSpecification(specification);
 	}
 
-	work(wrapper: MessageWrapper): void {
-		if (this.xsdChecker.checkXml(wrapper.message)) {
-			let result: ResultWrapper = this.elemExtractor.extract(wrapper);
+	work(payment: PaymentMessage): void {
+		if (this.xsdChecker.checkXml(payment)) {
+			let result: ResultWrapper = this.elemExtractor.extract(payment);
 			this.dbConnector.saveResult(result);
 		} else {
 			// todo
