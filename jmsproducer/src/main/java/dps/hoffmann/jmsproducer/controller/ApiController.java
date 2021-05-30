@@ -49,8 +49,8 @@ public class ApiController {
         return "sent " + msgCnt + " sample xml payment messages";
     }
 
-    @PostMapping("/upload")
-    public void handleFileUpload(@RequestParam("file") MultipartFile inputFile) throws IOException,
+    @PostMapping("/upload-xsd")
+    public void uploadSpecification(@RequestParam("file") MultipartFile inputFile) throws IOException,
             JAXBException, InterruptedException {
         log.info("upload file");
         log.info(new String(inputFile.getBytes()));

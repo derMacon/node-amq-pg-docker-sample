@@ -1,5 +1,4 @@
-import * as xml from 'libxmljs2';
-
+import { Document } from 'libxmljs2';
 import { Specification } from '../model/Specification';
 import { PaymentMessage } from '../model/PaymentMessage';
 
@@ -16,7 +15,7 @@ export class XsdChecker {
 
 		// todo throw exception when no spec found
 
-		let doc: xml.Document = xml.parseXmlString(xmlContent.getMessage());
+		let doc: Document = xmlContent.getDocument();
 		return doc.validate(spec.getXsdContent());
 	}
 

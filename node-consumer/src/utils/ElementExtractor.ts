@@ -1,5 +1,7 @@
+import { Node } from "libxmljs2";
 import { PaymentMessage } from "../model/PaymentMessage";
 import { ResultWrapper } from "../model/ResultWrapper";
+import { Specification } from "../model/Specification";
 
 export class ElementExtractor {
 
@@ -9,8 +11,9 @@ export class ElementExtractor {
 		let extractedElem: string = "this is a test";
 
 		return new ResultWrapper(
-			messageWrapper.getMessage(),
-			extractedElem, 
+			messageWrapper.getDocument(),
+			new Node(),
+			new Specification('test1', 'test2'),
 			new Date(),
 			new Date(),
 			new Date()
