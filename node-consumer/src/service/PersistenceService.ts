@@ -3,7 +3,7 @@ import { ResultWrapper } from '../model/ResultWrapper';
 
 export class PersistenceService {
 
-	dbClient: PgDriver.Client;
+	private dbClient: PgDriver.Client;
 
 	constructor() {
 		this.dbClient = new PgDriver.Client({

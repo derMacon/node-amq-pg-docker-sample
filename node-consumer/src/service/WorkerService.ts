@@ -6,9 +6,9 @@ import { PersistenceService } from './PersistenceService';
 
 export class WorkerService {
 
-	elemExtractor: ElementExtractor;
-	xsdChecker: XsdChecker;
-	dbConnector: PersistenceService;
+	private elemExtractor: ElementExtractor;
+	private xsdChecker: XsdChecker;
+	private dbConnector: PersistenceService;
 
 	constructor(
 		elemExtractor: ElementExtractor,
@@ -18,6 +18,10 @@ export class WorkerService {
 		this.elemExtractor = elemExtractor;
 		this.xsdChecker = xsdChecker;
 		this.dbConnector = dbConnector;
+	}
+
+	updateSpecification(xsdContent: string) {
+		this.xsdChecker.setXsdSpecification(xsdContent);
 	}
 
 	work(wrapper: MessageWrapper): void {

@@ -5,10 +5,10 @@ const Stomp = require('stomp-client');
 
 export class AmqService {
 
-	queueDestination: string;
-	topicDestination: string;
-	stompClient: any;
-	workerService: WorkerService;
+	private queueDestination: string;
+	private topicDestination: string;
+	private stompClient: any;
+	private workerService: WorkerService;
 
 	constructor(workerService: WorkerService) {
 		this.workerService = workerService;

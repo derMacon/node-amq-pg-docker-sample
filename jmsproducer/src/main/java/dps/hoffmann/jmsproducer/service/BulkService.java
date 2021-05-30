@@ -1,9 +1,9 @@
 package dps.hoffmann.jmsproducer.service;
 
 import dps.hoffmann.jmsproducer.model.MessageWrapper;
+import dps.hoffmann.jmsproducer.model.SpecificationWrapper;
+import dps.hoffmann.jmsproducer.properties.SampleProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -17,33 +17,47 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BulkService {
 
-    @Value("${sample.xmlres}")
-    private String xmlResourceName;
+    private SampleProperties sampleProperties;
 
-    @Autowired
     private AmqService amqService;
+
+    public BulkService(
+            AmqService amqService,
+            SampleProperties sampleProperties
+    ) {
+        this.amqService = amqService;
+        this.sampleProperties = sampleProperties;
+
+        addXsdSpecification(
+                sampleProperties.getSpecificationName(),
+                readResource(sampleProperties.getXsdres())
+        );
+    }
 
     public void createBulkSamplePayment(int messageCnt, int timePeriod) {
         // todo timeperiod...
         log.info("create bulk sample payment: {messageCnt: {}, timePeriod: {}}", messageCnt, timePeriod);
-        String sampleXmlContent = createSampleXmlMessage();
+        String sampleXmlContent = readResource(this.sampleProperties.getXmlres());
         for (int i = 0; i < messageCnt; i++) {
             MessageWrapper wrapper = new MessageWrapper(sampleXmlContent, new Timestamp(System.currentTimeMillis()));
             amqService.sendObjPaymentQueueMessage(wrapper);
         }
     }
 
-    private String createSampleXmlMessage() {
-        String content = "";
+    public void addXsdSpecification(String specificationName, String xsdContent) {
+        SpecificationWrapper specification = new SpecificationWrapper(specificationName, xsdContent);
+        amqService.sendXsdFormatTopic(specification);
+    }
 
-        try (InputStream inputStream = getClass().getResourceAsStream(xmlResourceName);
+    private String readResource(String filename) {
+        String content = "";
+        try (InputStream inputStream = getClass().getResourceAsStream(filename);
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             content = reader.lines()
                     .collect(Collectors.joining(System.lineSeparator()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return content;
     }
 

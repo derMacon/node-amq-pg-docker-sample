@@ -3,7 +3,9 @@ package dps.hoffmann.jmsproducer.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dps.hoffmann.jmsproducer.model.MessageWrapper;
+import dps.hoffmann.jmsproducer.model.SpecificationWrapper;
 import dps.hoffmann.jmsproducer.properties.ActivemqProperties;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,7 +23,11 @@ public class AmqService {
 
     @Autowired
     @Qualifier("queueTemplate")
-    JmsTemplate jmsTemplate;
+    JmsTemplate jmsQueueTemplate;
+
+    @Autowired
+    @Qualifier("topicTemplate")
+    JmsTemplate jmsTopicTemplate;
 
     @Autowired
     private ActivemqProperties activemqProperties;
@@ -42,10 +48,21 @@ public class AmqService {
 
     public void sendTxtPaymentQueueMessage(String message) {
         log.info("new txt message: {}", message);
-        jmsTemplate.send(activemqProperties.getQueue(), new MessageCreator() {
+        jmsQueueTemplate.send(activemqProperties.getQueue(), new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
                 return session.createTextMessage(message);
+            }
+        });
+    }
+
+    public void sendXsdFormatTopic(SpecificationWrapper wrapper) {
+        log.info("xsd format");
+        this.jmsTopicTemplate.send(this.activemqProperties.getTopic(), new MessageCreator() {
+            @SneakyThrows
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(objectMapper.writeValueAsString(wrapper));
             }
         });
     }
