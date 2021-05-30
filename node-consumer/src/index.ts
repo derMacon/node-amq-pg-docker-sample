@@ -7,8 +7,6 @@ import { XsdChecker } from './utils/XsdChecker';
 
 require('dotenv').config();
 
-const messages: MessageWrapper[] = [];
-
 let workerService: WorkerService = new WorkerService(
 	new ElementExtractor(),
 	new XsdChecker(),
