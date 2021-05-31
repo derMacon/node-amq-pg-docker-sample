@@ -28,7 +28,6 @@
     "typescript": "^4.3.2",
     "xmldom": "^0.6.0",
     "xpath": "^0.0.32",
-    "xpath.js": "^1.1.0",
     "xsd-schema-validator": "^0.7.0"
   },
   "devDependencies": {
