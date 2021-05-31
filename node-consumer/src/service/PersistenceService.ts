@@ -35,8 +35,6 @@ export class PersistenceService {
 			let query: string = data.toString();
 			// let query: string = data.toString().replace(/(\r\n|\n|\r|\t)/gm, "");
 
-			console.log("execute shema query: ", query);
-
 			// query database 
 			this.dbClient.query(query, (err, res) => {
 				if (err) {
@@ -72,14 +70,12 @@ export class PersistenceService {
 			'${this.transformDate(result.processedTimestamp!)}'
 		);`;
 
-		// console.log("query: ", query)
-
 		this.dbClient.query(query, (err, res) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
-			console.log('Data insert successful');
+			console.log('Data insert successfull');
 		});
 	}
 

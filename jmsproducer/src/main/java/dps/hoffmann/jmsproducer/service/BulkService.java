@@ -35,7 +35,8 @@ public class BulkService {
     public void refreshSpecs() {
         addXsdSpecification(
                 sampleProperties.getSpecificationName(),
-                readResource(sampleProperties.getXsdres())
+                readResource(sampleProperties.getXsdres()),
+                sampleProperties.getXPath()
         );
     }
 
@@ -56,8 +57,15 @@ public class BulkService {
         }
     }
 
-    public void addXsdSpecification(String specificationName, String xsdContent) {
-        SpecificationWrapper specification = new SpecificationWrapper(specificationName, xsdContent);
+    public void addXsdSpecification(String specificationName, String xsdContent, String xPath) {
+
+        SpecificationWrapper specification = new SpecificationWrapper(
+                specificationName,
+                xsdContent,
+                xPath
+        );
+
+//        log.info("new specs: ", specification);
         amqService.sendXsdFormatTopic(specification);
     }
 

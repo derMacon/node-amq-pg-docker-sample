@@ -12,5 +12,9 @@ export class Specification {
     get xsdContent(): string {
 		return this.specInput.xsdContent;
 	}
+	 
+	get xpath(): string {
+		return this.specInput.xpath;
+	}
 
 }

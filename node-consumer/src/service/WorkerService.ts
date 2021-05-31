@@ -29,6 +29,8 @@ export class WorkerService {
 		let payment: PaymentMessage = JSON.parse(msgBody);
 		let result: ResultWrapper = new ResultWrapper(payment);
 
+		console.log("pay: ", msgBody);
+
 		let specification: Specification | undefined = this.findSpecification(payment.specificationName);
 		let xmlDoc = parseXmlString(payment.content);
 
@@ -36,7 +38,7 @@ export class WorkerService {
 			&& xmlDoc.validate(parseXmlString(specification.xsdContent))
 		) {
 			console.log("xsd checks out start to work");
-			let val: string = this.extractValue(payment);
+			let val: string = this.extractValue(payment, specification);
 			console.log('extracted: ', val);
 
 			result.appendProcessedTimestamp(new Date())
@@ -71,16 +73,27 @@ export class WorkerService {
 		return out!;
 	}
 
-	extractValue(payment: PaymentMessage): string {
+	extractValue(payment: PaymentMessage, specification: Specification): string {
 		let doc = new Dom().parseFromString(payment.content)
-		let node = xpath.select(
-			"/*[local-name(.)='Document']" + 
-			"/*[local-name(.)='CstmrCdtTrfInitn']" + 
-			"/*[local-name(.)='PmtInf']" + 
-			"/*[local-name(.)='DbtrAcct']" +
-			"/*[local-name(.)='Id']" +
-			"/*[local-name(.)='IBAN']"
-		, doc)[0]
+
+		let xPathElems: string[] = specification.xpath.split('/');
+		xPathElems.shift(); // delete first element
+
+		let generatedPath: string = "";
+		xPathElems.forEach(e => generatedPath += `/*[local-name(.)='${e}']`);
+
+		// let node = xpath.select(
+		// 	"/*[local-name(.)='Document']" + 
+		// 	"/*[local-name(.)='CstmrCdtTrfInitn']" + 
+		// 	"/*[local-name(.)='PmtInf']" + 
+		// 	"/*[local-name(.)='DbtrAcct']" +
+		// 	"/*[local-name(.)='Id']" +
+		// 	"/*[local-name(.)='IBAN']"
+		// , doc)[0]
+
+		console.log("generated path: ", generatedPath);
+
+		let node = xpath.select(generatedPath, doc)[0]
 		return node.textContent;
 	}
 

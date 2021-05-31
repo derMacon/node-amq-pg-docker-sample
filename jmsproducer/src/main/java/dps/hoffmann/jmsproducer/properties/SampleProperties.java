@@ -13,4 +13,5 @@ public class SampleProperties {
     private String xmlres;
     private String xsdres;
     private String specificationName;
+    private String xPath;
 }

@@ -57,11 +57,13 @@ public class AmqService {
     }
 
     public void sendXsdFormatTopic(SpecificationWrapper wrapper) {
-        log.info("xsd format");
+        log.info("xsd format: ", wrapper);
         this.jmsTopicTemplate.send(this.activemqProperties.getTopic(), new MessageCreator() {
             @SneakyThrows
             @Override
             public Message createMessage(Session session) throws JMSException {
+                String tmp = objectMapper.writeValueAsString(wrapper);
+                log.info("obj mapper: " + tmp);
                 return session.createTextMessage(objectMapper.writeValueAsString(wrapper));
             }
         });
