@@ -30,7 +30,7 @@ export class AmqService {
 			
 			that.stompClient.subscribe(that.queueDestination, function(body: string, headers: string) {
 				console.log('queue msg header: ', headers);
-				// console.log('This is the body of a message on the subscribed queue:', body);
+				console.log('This is the body of a message on the subscribed queue:', body);
 				let inputMsg: PaymentMessage = JSON.parse(body);
 				// let doc: Document = parseXmlString(inputMsg.content);
 				// console.log("before doc: ", doc);
@@ -39,7 +39,7 @@ export class AmqService {
 			
 			that.stompClient.subscribe(that.topicDestination, function(body: string, headers: string) {
 				console.log('topic msg header: ', headers);
-				// console.log('This is the body of a message on the subscribed topic:', body);
+				console.log('This is the body of a message on the subscribed topic:', body);
 				let inputMsg: Specification = JSON.parse(body);
 				that.workerService.updateSpecification(inputMsg);
 			});

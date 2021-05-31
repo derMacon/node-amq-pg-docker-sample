@@ -28,11 +28,18 @@ public class BulkService {
         this.amqService = amqService;
         this.sampleProperties = sampleProperties;
 
+        refreshSpecs();
+    }
+
+
+    public void refreshSpecs() {
         addXsdSpecification(
                 sampleProperties.getSpecificationName(),
                 readResource(sampleProperties.getXsdres())
         );
     }
+
+
 
     public void createBulkSamplePayment(int messageCnt, int timePeriod) {
         // todo timeperiod...

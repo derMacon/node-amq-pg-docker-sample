@@ -56,6 +56,12 @@ public class ApiController {
         log.info(new String(inputFile.getBytes()));
     }
 
+    @RequestMapping("/refresh-sample-xsd")
+    public void refreshSampleXsd() {
+        log.info("refresh specification");
+        this.bulkMessengerService.refreshSpecs();
+    }
+
     /**
      * Saves a uploaded file to the external directory
      * @param multipartFile file which the user uploaded
