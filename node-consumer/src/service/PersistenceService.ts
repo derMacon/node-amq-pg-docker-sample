@@ -1,9 +1,13 @@
 import * as PgDriver from 'pg';
+import * as fs from 'fs';
+import * as Xml from 'libxmljs2';
+
 import { ResultWrapper } from '../model/ResultWrapper';
+import * as Xsd from '../model/Specification';
 
 export class PersistenceService {
 
-	dbClient: PgDriver.Client;
+	private dbClient: PgDriver.Client;
 
 	constructor() {
 		this.dbClient = new PgDriver.Client({
@@ -21,32 +25,93 @@ export class PersistenceService {
 				console.log('connected to postgres db')
 			}
 		});
+
+		// load schema file
+		fs.readFile("./schema.sql", (error: any, data: any) => {
+			if (error) {
+				throw error;
+			}
+
+			let query: string = data.toString();
+			// let query: string = data.toString().replace(/(\r\n|\n|\r|\t)/gm, "");
+
+			// query database 
+			this.dbClient.query(query, (err, res) => {
+				if (err) {
+					console.error(err);
+					return;
+				}
+				console.log('schema execution successfull', res);
+			});
+
+
+		});
+
 	}
 
 	saveResult(result: ResultWrapper): void {
+
+		console.log("persist obj: ", result);
+
 		const query = `
-		INSERT INTO messages (message, elem, sent, received, processed)
-		VALUES (
+		INSERT INTO payment (
+			content, 
+			extracted_element, 
+			specification_name,
+			sent_timestamp, 
+			received_timestamp, 
+			processed_timestamp
+		) VALUES (
 			'${result.message}',
 			'${result.extractedElem}',
-			'${this.transformDate(result.sent)}',
-			'${this.transformDate(result.received)}',
-			'${this.transformDate(result.processed)}'
+			'${result.specificationName}',
+			'${this.transformDate(result.receivedTimestamp!)}',
+			'${this.transformDate(result.receivedTimestamp!)}',
+			'${this.transformDate(result.processedTimestamp!)}'
 		);`;
-
-		console.log("query: ", query)
 
 		this.dbClient.query(query, (err, res) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
-			console.log('Data insert successful');
+			console.log('Data insert successfull');
 		});
 	}
 
+	saveSpecification(specification: Xsd.Specification): void {
+		// todo - scheint irgendwie nicht zu gehen: error: index row requires 8472 bytes, maximum size is 8191
+		// bei kuerzerer xsd Spezifikation laeufts aber...
+
+		console.log("save: -------- ", specification.specificationName);
+
+		// const query: string = `
+		// INSERT INTO specification (
+		// 	specification_name, 
+		// 	specification_xsd
+		// ) VALUES (
+		// 	'${specification.specificationName}',
+		// 	'${specification.xsdContent}'
+		// );`;
+
+		// console.log("save specs - query: ", query)
+
+		// this.dbClient.query(query, (err, res) => {
+		// 	if (err) {
+		// 		console.error(err);
+		// 		return;
+		// 	}
+		// 	console.log('schema execution successfull');
+		// });
+		
+	}
+
+
 	transformDate(inputDate: Date): string {
-		return inputDate.toLocaleDateString() + " " + inputDate.toLocaleTimeString();
+		console.log('date: ', inputDate)
+		// return inputDate.getMilliseconds();
+		// return inputDate.toLocaleDateString() + " " + inputDate.toLocaleTimeString() + ":" + inputDate.getMilliseconds();
+		return inputDate.toISOString();
 	}
 
 }

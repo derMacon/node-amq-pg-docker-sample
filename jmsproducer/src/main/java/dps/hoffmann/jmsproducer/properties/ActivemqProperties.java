@@ -14,4 +14,5 @@ import java.util.List;
 public class ActivemqProperties {
     private String url;
     private String queue;
+    private String topic;
 }

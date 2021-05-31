@@ -1,20 +1,23 @@
-import { MessageWrapper } from "../model/MessageWrapper";
+import { Document, Node } from "libxmljs2";
+import { PaymentMessage } from "../model/PaymentMessage";
 import { ResultWrapper } from "../model/ResultWrapper";
+import { Specification } from "../model/Specification";
 
 export class ElementExtractor {
 
-	extract(messageWrapper: MessageWrapper): ResultWrapper {
+	// extract(messageWrapper: PaymentMessage): ResultWrapper {
 
-		// todo
-		let extractedElem: string = "this is a test";
+	// 	// todo
+	// 	let extractedElem: string = "this is a test";
 
-		return new ResultWrapper(
-			messageWrapper.message,
-			extractedElem, 
-			new Date(),
-			new Date(),
-			new Date()
-		);
-	}
+	// 	return new ResultWrapper(
+	// 		new Document(),
+	// 		new Node(),
+	// 		new Specification(),
+	// 		new Date(),
+	// 		new Date(),
+	// 		new Date()
+	// 	);
+	// }
 
 }
