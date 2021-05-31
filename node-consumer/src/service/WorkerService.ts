@@ -65,7 +65,14 @@ export class WorkerService {
 
 	extractValue(payment: PaymentMessage): string {
 		let doc = new Dom().parseFromString(payment.content)
-		let node = xpath.select("/*[local-name(.)='employee']/*[local-name(.)='firstname']", doc)[0]
+		let node = xpath.select(
+			"/*[local-name(.)='Document']" + 
+			"/*[local-name(.)='CstmrCdtTrfInitn']" + 
+			"/*[local-name(.)='PmtInf']" + 
+			"/*[local-name(.)='DbtrAcct']" +
+			"/*[local-name(.)='Id']" +
+			"/*[local-name(.)='IBAN']"
+		, doc)[0]
 		return node.textContent;
 	}
 
