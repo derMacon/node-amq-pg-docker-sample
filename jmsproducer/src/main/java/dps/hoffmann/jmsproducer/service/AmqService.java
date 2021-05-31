@@ -2,7 +2,7 @@ package dps.hoffmann.jmsproducer.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dps.hoffmann.jmsproducer.model.MessageWrapper;
+import dps.hoffmann.jmsproducer.model.PaymentMessage;
 import dps.hoffmann.jmsproducer.model.SpecificationWrapper;
 import dps.hoffmann.jmsproducer.properties.ActivemqProperties;
 import lombok.SneakyThrows;
@@ -35,7 +35,7 @@ public class AmqService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public void sendObjPaymentQueueMessage(MessageWrapper wrapper) {
+    public void sendObjPaymentQueueMessage(PaymentMessage wrapper) {
         String convertedJson = "";
         try {
             convertedJson = objectMapper.writeValueAsString(wrapper);

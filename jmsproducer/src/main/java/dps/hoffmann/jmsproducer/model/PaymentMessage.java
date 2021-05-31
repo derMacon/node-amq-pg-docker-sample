@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 
 @Value
 public class PaymentMessage implements Serializable {
-    private final String message;
-    private final Timestamp sent;
+    private final String content;
+    private final String specificationName;
+    private final Timestamp sentTimestamp;
 }

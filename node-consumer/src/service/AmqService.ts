@@ -1,4 +1,6 @@
+import { Document, parseXmlString } from 'libxmljs2';
 import { PaymentMessage } from '../model/PaymentMessage';
+import { PaymentInput } from '../model/PaymentInput';
 import { Specification } from '../model/Specification';
 import { WorkerService } from './WorkerService';
 
@@ -30,7 +32,8 @@ export class AmqService {
 				console.log('queue msg header: ', headers);
 				// console.log('This is the body of a message on the subscribed queue:', body);
 				let inputMsg: PaymentMessage = JSON.parse(body);
-				console.log("before work: ", inputMsg.specificationName);
+				// let doc: Document = parseXmlString(inputMsg.content);
+				// console.log("before doc: ", doc);
 				that.workerService.work(inputMsg);
 			});
 			

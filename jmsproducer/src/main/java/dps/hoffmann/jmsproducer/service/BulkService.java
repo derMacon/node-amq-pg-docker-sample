@@ -1,6 +1,6 @@
 package dps.hoffmann.jmsproducer.service;
 
-import dps.hoffmann.jmsproducer.model.MessageWrapper;
+import dps.hoffmann.jmsproducer.model.PaymentMessage;
 import dps.hoffmann.jmsproducer.model.SpecificationWrapper;
 import dps.hoffmann.jmsproducer.properties.SampleProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -38,8 +38,13 @@ public class BulkService {
         // todo timeperiod...
         log.info("create bulk sample payment: {messageCnt: {}, timePeriod: {}}", messageCnt, timePeriod);
         String sampleXmlContent = readResource(this.sampleProperties.getXmlres());
+
         for (int i = 0; i < messageCnt; i++) {
-            MessageWrapper wrapper = new MessageWrapper(sampleXmlContent, new Timestamp(System.currentTimeMillis()));
+            PaymentMessage wrapper = new PaymentMessage(
+                    sampleXmlContent,
+                    sampleProperties.getSpecificationName(),
+                    new Timestamp(System.currentTimeMillis())
+            );
             amqService.sendObjPaymentQueueMessage(wrapper);
         }
     }
