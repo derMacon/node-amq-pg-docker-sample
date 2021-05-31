@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Value
-public class MessageWrapper implements Serializable {
+public class PaymentMessage implements Serializable {
     private final String message;
     private final Timestamp sent;
 }

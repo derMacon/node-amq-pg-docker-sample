@@ -4,7 +4,7 @@ import { Specification } from '../model/Specification';
 
 export class ResultWrapper {
 
-	private message: Document;
+	private content: Document;
 	private extractedElem: Node;
 	private specification: Specification;
 	private sentTimestamp: Date;
@@ -19,7 +19,7 @@ export class ResultWrapper {
 		received: Date,
 		processed: Date
 	) {
-		this.message = message;
+		this.content = message;
 		this.extractedElem = extractedElem;
 		this.specification = specification;
 		this.sentTimestamp = sent;
@@ -29,7 +29,7 @@ export class ResultWrapper {
 
 
 	getMessage(): Document {
-		return this.message;
+		return this.content;
 	}
 
 	getExtractedElem(): Node {

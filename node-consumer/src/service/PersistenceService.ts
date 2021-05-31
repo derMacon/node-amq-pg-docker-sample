@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as Xml from 'libxmljs2';
 
 import { ResultWrapper } from '../model/ResultWrapper';
-import { Specification } from '../model/Specification';
+import * as Xsd from '../model/Specification';
 
 export class PersistenceService {
 
@@ -54,42 +54,21 @@ export class PersistenceService {
 
 	saveResult(result: ResultWrapper): void {
 
-		// const query = `
-		// INSERT INTO payment (
-		// 	content, 
-		// 	extracted_element, 
-		// 	specification_id
-		// 	sent_timestamp, 
-		// 	received_timestamp, 
-		// 	processed_timestamp
-		// ) VALUES (
-		// 	'${result.getMessage()}',
-		// 	'${result.getExtractedElem()}',
-		// 	'${result.()}',
-		// 	'${this.transformDate(result.getSentTimestamp())}',
-		// 	'${this.transformDate(result.getReceivedTimestamp())}',
-		// 	'${this.transformDate(result.getProcessedTimestamp())}'
-		// );`;
-
-		// console.log("query: ", query)
-
-		// this.dbClient.query(query, (err, res) => {
-		// 	if (err) {
-		// 		console.error(err);
-		// 		return;
-		// 	}
-		// 	console.log('Data insert successful');
-		// });
-	}
-
-	saveSpecification(specification: Specification): void {
 		const query = `
-		INSERT INTO messages (
-			specification_name, 
-			specification_xsd
+		INSERT INTO payment (
+			content, 
+			extracted_element, 
+			specification_id
+			sent_timestamp, 
+			received_timestamp, 
+			processed_timestamp
 		) VALUES (
-			'${specification.getSpecificationName()}',
-			'${specification.getXsdContent()}'
+			'${result.getMessage()}',
+			'${result.getExtractedElem()}',
+			'${this.findId(result.getSpecification())}',
+			'${this.transformDate(result.getSentTimestamp())}',
+			'${this.transformDate(result.getReceivedTimestamp())}',
+			'${this.transformDate(result.getProcessedTimestamp())}'
 		);`;
 
 		console.log("query: ", query)
@@ -99,9 +78,59 @@ export class PersistenceService {
 				console.error(err);
 				return;
 			}
+			console.log('Data insert successful');
+		});
+	}
+
+	saveSpecification(specification: Xsd.Specification): void {
+		console.log("save: -------- ", specification.xsdContent);
+
+		const query: string = `
+		INSERT INTO specification (
+			specification_name, 
+			specification_xsd
+		) VALUES (
+			'${specification.specificationName}',
+			'${specification.xsdContent}'
+		);`;
+
+		console.log("save specs - query: ", query)
+
+		this.dbClient.query(query, (err, res) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
 			console.log('schema execution successfull');
 		});
 		
+	}
+
+
+
+	// -------- utility methods -------- //
+
+	findId(specification: Xsd.Specification): number {
+		// const query = `
+		// INSERT INTO messages (
+		// 	specification_name, 
+		// 	specification_xsd
+		// ) VALUES (
+		// 	'${specification.getSpecificationName()}',
+		// 	'${specification.getXsdContent()}'
+		// );`;
+
+		// console.log("query: ", query)
+
+		// this.dbClient.query(query, (err, res) => {
+		// 	if (err) {
+		// 		console.error(err);
+		// 		return;
+		// 	}
+		// 	console.log('schema execution successfull');
+		// });
+
+		return 1;
 	}
 
 	transformDate(inputDate: Date): string {

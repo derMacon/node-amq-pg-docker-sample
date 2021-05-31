@@ -1,4 +1,4 @@
-import { PaymentMessage } from '../model/PaymentMessage';
+// import { Payment } from '../model/PaymentMessage';
 import { Specification } from '../model/Specification';
 import { WorkerService } from './WorkerService';
 
@@ -24,13 +24,13 @@ export class AmqService {
 	connectBroker() {
 		const that = this;
 		this.stompClient.connect(function(sessionId: number) {
-			console.log("in connect.............");
+			console.log("in amq connect.............");
 			
 			that.stompClient.subscribe(that.queueDestination, function(body: string, headers: string) {
 				console.log('queue msg header: ', headers);
 				// console.log('This is the body of a message on the subscribed queue:', body);
-				let inputMsg: PaymentMessage = JSON.parse(body);
-				that.workerService.work(inputMsg);
+				// let inputMsg: Payment = JSON.parse(body);
+				// that.workerService.work(inputMsg);
 			});
 			
 			that.stompClient.subscribe(that.topicDestination, function(body: string, headers: string) {

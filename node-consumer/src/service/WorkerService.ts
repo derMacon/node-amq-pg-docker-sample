@@ -1,4 +1,4 @@
-import { PaymentMessage } from "../model/PaymentMessage";
+// import { Payment } from "../model/PaymentMessage";
 import { ResultWrapper } from "../model/ResultWrapper";
 import { Specification } from "../model/Specification";
 import { ElementExtractor } from "../utils/ElementExtractor";
@@ -23,14 +23,15 @@ export class WorkerService {
 
 	updateSpecification(specification: Specification) {
 		this.xsdChecker.addSpecification(specification);
+		this.dbConnector.saveSpecification(specification);
 	}
 
-	work(payment: PaymentMessage): void {
-		if (this.xsdChecker.checkXml(payment)) {
-			let result: ResultWrapper = this.elemExtractor.extract(payment);
-			this.dbConnector.saveResult(result);
-		} else {
-			// todo
-		}
-	}
+	// work(payment: Payment): void {
+	// 	if (this.xsdChecker.checkXml(payment)) {
+	// 		// let result: ResultWrapper = this.elemExtractor.extract(payment);
+	// 		// this.dbConnector.saveResult(result);
+	// 	} else {
+	// 		// todo
+	// 	}
+	// }
 }

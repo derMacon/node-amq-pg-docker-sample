@@ -1,24 +1,16 @@
-import * as Xml from 'libxmljs2';
+import { Document, parseXmlString } from 'libxmljs2';
+import { SpecificationInput } from './SpecificationInput';
 
 export class Specification {
 
-	private specificationName: string;
-    private xsd: Xml.Document;
+	constructor(private specInput: SpecificationInput) {}
 
-	constructor(
-		specificationName: string,
-		xsdContent: string
-	) {
-		this.specificationName = specificationName;
-		this.xsd = Xml.parseXmlString(xsdContent);
+	get specificationName(): string {
+		return this.specInput.specificationName;
 	}
 
-	getSpecificationName(): string {
-		return this.specificationName;
-	}
-
-	getXsdContent(): Xml.Document {
-		return this.xsd;
+    get xsdContent(): Document {
+		return parseXmlString(this.specInput.xsdContent);
 	}
 
 }

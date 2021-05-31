@@ -1,29 +1,20 @@
-import { Document } from 'libxmljs2';
+import { Payment } from './Payment';
 
-export class PaymentMessage {
-	private document: Document;
-	private specificationName: string;
-	private sent: Date;
+// src: https://stackoverflow.com/questions/34031448/typescript-typeerror-myclass-myfunction-is-not-a-function
+export class PaymentMessage implements Payment {
 
-	constructor(
-		message: Document,
-		specificationName: string,
-		sent: Date,
-	) {
-		this.document = message;
-		this.specificationName = specificationName;
-		this.sent = sent;
+	constructor(private initData: Payment) {}
+
+	get specificationName(): string {
+		 return this.initData.specificationName; 
 	}
 
-	getDocument(): Document {
-		return this.document;
+	get content(): string {
+		 return this.initData.content;
+	};
+
+	get sentTimestamp(): Date {
+		return this.initData.sentTimestamp
 	}
 
-	getSpecificationName(): string {
-		return this.specificationName;
-	}
-
-	getSent(): Date {
-		return this.sent;
-	}
 }
