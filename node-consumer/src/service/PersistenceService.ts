@@ -53,24 +53,26 @@ export class PersistenceService {
 
 	saveResult(result: ResultWrapper): void {
 
+		console.log("persist obj: ", result);
+
 		const query = `
 		INSERT INTO payment (
 			content, 
 			extracted_element, 
-			specification_id
+			specification_name,
 			sent_timestamp, 
 			received_timestamp, 
 			processed_timestamp
 		) VALUES (
 			'${result.message}',
 			'${result.extractedElem}',
-			'${result.specification.specificationName}',
-			'${this.transformDate(result.sentTimestamp)}',
-			'${this.transformDate(result.receivedTimestamp)}',
-			'${this.transformDate(result.processedTimestamp)}'
+			'${result.specificationName}',
+			'${this.transformDate(result.receivedTimestamp!)}',
+			'${this.transformDate(result.receivedTimestamp!)}',
+			'${this.transformDate(result.processedTimestamp!)}'
 		);`;
 
-		console.log("query: ", query)
+		// console.log("query: ", query)
 
 		this.dbClient.query(query, (err, res) => {
 			if (err) {
@@ -109,34 +111,11 @@ export class PersistenceService {
 	}
 
 
-
-	// -------- utility methods -------- //
-
-	// findId(specification: Xsd.Specification): number {
-	// 	// const query = `
-	// 	// INSERT INTO messages (
-	// 	// 	specification_name, 
-	// 	// 	specification_xsd
-	// 	// ) VALUES (
-	// 	// 	'${specification.getSpecificationName()}',
-	// 	// 	'${specification.getXsdContent()}'
-	// 	// );`;
-
-	// 	// console.log("query: ", query)
-
-	// 	// this.dbClient.query(query, (err, res) => {
-	// 	// 	if (err) {
-	// 	// 		console.error(err);
-	// 	// 		return;
-	// 	// 	}
-	// 	// 	console.log('schema execution successfull');
-	// 	// });
-
-	// 	return 1;
-	// }
-
 	transformDate(inputDate: Date): string {
-		return inputDate.toLocaleDateString() + " " + inputDate.toLocaleTimeString();
+		console.log('date: ', inputDate)
+		// return inputDate.getMilliseconds();
+		// return inputDate.toLocaleDateString() + " " + inputDate.toLocaleTimeString() + ":" + inputDate.getMilliseconds();
+		return inputDate.toISOString();
 	}
 
 }

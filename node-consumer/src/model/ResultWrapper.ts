@@ -1,40 +1,54 @@
 import { Document, Node } from 'libxmljs2';
 import { Specification } from '../model/Specification';
+import { PaymentMessage } from './PaymentMessage';
+
 
 export class ResultWrapper {
 
-	constructor(
-		private _message: Document,
-		private _extractedElem: Node,
-		private _specification: Specification,
-		private _sentTimestamp: Date,
-		private _receivedTimestamp: Date,
-		private _processedTimestamp: Date
-	) {}
+	message: string | undefined;
+	extractedElem: string | undefined;
+	specificationName: string | undefined;
+	sentTimestamp: Date | undefined;
+	receivedTimestamp: Date | undefined;
+	processedTimestamp: Date | undefined;
 
-	get message(): Document {
-		return this._message;
+	constructor(
+		payment: PaymentMessage
+	) {
+		this.specificationName = payment.specificationName;
+		this.message = payment.content;
+		this.sentTimestamp = payment.sentTimestamp;
+		this.receivedTimestamp = (new Date());
 	}
 
-	get extractedElem(): Node {
-		return this._extractedElem;
+	appendMessage(message: string): ResultWrapper {
+		this.message = message;
+		return this;
+	}
+
+	appendExtractedElem(extractedElem: string): ResultWrapper {
+		this.extractedElem = extractedElem;
+		return this;
 	}
 	
-	get specification(): Specification {
-		return this._specification;
+	appendSpecificationName(specificationName: string): ResultWrapper {
+		this.specificationName = specificationName;
+		return this;
 	}
 
-	get sentTimestamp(): Date {
-		return this._sentTimestamp;
+	appendSentTimestamp(sentTimestamp: Date): ResultWrapper {
+		this.sentTimestamp = sentTimestamp;
+		return this;
 	}
 
-
-	get receivedTimestamp(): Date {
-		return this._receivedTimestamp;
+	appendReceivedTimestamp(receivedTimestamp: Date): ResultWrapper {
+		this.receivedTimestamp = receivedTimestamp;
+		return this;
 	}
 
-	get processedTimestamp(): Date {
-		return this._processedTimestamp;
+	appendProcessedTimestamp(processedTimestamp: Date): ResultWrapper {
+		this.processedTimestamp = processedTimestamp;
+		return this;
 	}
 
 }

@@ -25,7 +25,10 @@ export class WorkerService {
 		this.dbConnector.saveSpecification(specification);
 	}
 
-	work(payment: PaymentMessage): void {
+	work(msgBody: string): void {
+		let payment: PaymentMessage = JSON.parse(msgBody);
+		let result: ResultWrapper = new ResultWrapper(payment);
+
 		let specification: Specification | undefined = this.findSpecification(payment.specificationName);
 		let xmlDoc = parseXmlString(payment.content);
 
@@ -35,6 +38,11 @@ export class WorkerService {
 			console.log("xsd checks out start to work");
 			let val: string = this.extractValue(payment);
 			console.log('extracted: ', val);
+
+			result.appendProcessedTimestamp(new Date())
+					.appendExtractedElem(val);
+
+			this.dbConnector.saveResult(result);
 		} else {
 			console.log("xsd does not check out");
 		}
