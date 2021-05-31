@@ -7,6 +7,9 @@ import { PersistenceService } from './PersistenceService';
 import { PaymentMessage } from '../model/PaymentMessage';
 import { parseXmlString, Document } from "libxmljs2";
 
+const Dom = require('xmldom').DOMParser;
+const select = require('xpath.js');
+
 export class WorkerService {
 
 	private xsdSpecification: Specification[] = [];
@@ -68,8 +71,18 @@ export class WorkerService {
 
 						console.log("content: ", payment.content);
 			
-			let xmlDoc: Document = parseXmlString(payment.content);
-			console.log("doc: ", xmlDoc.find('/employee'));
+			// let xmlDoc: Document = parseXmlString(payment.content);
+			// console.log("doc: ", xmlDoc.find('/employee'));
+
+			const xml = '<ns2:OrderList> ' +
+			'<order order_id="123" item_name="123"/>' +
+			 '</ns2:OrderList>';
+const doc = new Dom().parseFromString(payment.content);
+const nodes = select(doc, '//order');
+
+// const orderIds = nodes.map((node:any) => node.getAttribute('firstname'));
+const orderIds = nodes.map((node:any) => node.getAttribute('order_id'));
+console.log(orderIds);
 
 
 
