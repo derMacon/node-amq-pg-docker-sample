@@ -1,4 +1,4 @@
-export interface Payment {
+export interface PaymentInput {
 	content: string;
 	specificationName: string;
 	sentTimestamp: Date;

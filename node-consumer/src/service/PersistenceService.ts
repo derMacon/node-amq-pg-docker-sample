@@ -27,7 +27,6 @@ export class PersistenceService {
 		});
 
 		// load schema file
-		let query: string = "";
 		fs.readFile("./schema.sql", (error: any, data: any) => {
 			if (error) {
 				throw error;
@@ -63,12 +62,12 @@ export class PersistenceService {
 			received_timestamp, 
 			processed_timestamp
 		) VALUES (
-			'${result.getMessage()}',
-			'${result.getExtractedElem()}',
-			'${this.findId(result.getSpecification())}',
-			'${this.transformDate(result.getSentTimestamp())}',
-			'${this.transformDate(result.getReceivedTimestamp())}',
-			'${this.transformDate(result.getProcessedTimestamp())}'
+			'${result.message}',
+			'${result.extractedElem}',
+			'${result.specification.specificationName}',
+			'${this.transformDate(result.sentTimestamp)}',
+			'${this.transformDate(result.receivedTimestamp)}',
+			'${this.transformDate(result.processedTimestamp)}'
 		);`;
 
 		console.log("query: ", query)
@@ -83,44 +82,21 @@ export class PersistenceService {
 	}
 
 	saveSpecification(specification: Xsd.Specification): void {
-		console.log("save: -------- ", specification.xsdContent);
+		// todo - scheint irgendwie nicht zu gehen: error: index row requires 8472 bytes, maximum size is 8191
+		// bei kuerzerer xsd Spezifikation laeufts aber...
 
-		const query: string = `
-		INSERT INTO specification (
-			specification_name, 
-			specification_xsd
-		) VALUES (
-			'${specification.specificationName}',
-			'${specification.xsdContent}'
-		);`;
+		console.log("save: -------- ", specification.specificationName);
 
-		console.log("save specs - query: ", query)
-
-		this.dbClient.query(query, (err, res) => {
-			if (err) {
-				console.error(err);
-				return;
-			}
-			console.log('schema execution successfull');
-		});
-		
-	}
-
-
-
-	// -------- utility methods -------- //
-
-	findId(specification: Xsd.Specification): number {
-		// const query = `
-		// INSERT INTO messages (
+		// const query: string = `
+		// INSERT INTO specification (
 		// 	specification_name, 
 		// 	specification_xsd
 		// ) VALUES (
-		// 	'${specification.getSpecificationName()}',
-		// 	'${specification.getXsdContent()}'
+		// 	'${specification.specificationName}',
+		// 	'${specification.xsdContent}'
 		// );`;
 
-		// console.log("query: ", query)
+		// console.log("save specs - query: ", query)
 
 		// this.dbClient.query(query, (err, res) => {
 		// 	if (err) {
@@ -129,9 +105,35 @@ export class PersistenceService {
 		// 	}
 		// 	console.log('schema execution successfull');
 		// });
-
-		return 1;
+		
 	}
+
+
+
+	// -------- utility methods -------- //
+
+	// findId(specification: Xsd.Specification): number {
+	// 	// const query = `
+	// 	// INSERT INTO messages (
+	// 	// 	specification_name, 
+	// 	// 	specification_xsd
+	// 	// ) VALUES (
+	// 	// 	'${specification.getSpecificationName()}',
+	// 	// 	'${specification.getXsdContent()}'
+	// 	// );`;
+
+	// 	// console.log("query: ", query)
+
+	// 	// this.dbClient.query(query, (err, res) => {
+	// 	// 	if (err) {
+	// 	// 		console.error(err);
+	// 	// 		return;
+	// 	// 	}
+	// 	// 	console.log('schema execution successfull');
+	// 	// });
+
+	// 	return 1;
+	// }
 
 	transformDate(inputDate: Date): string {
 		return inputDate.toLocaleDateString() + " " + inputDate.toLocaleTimeString();

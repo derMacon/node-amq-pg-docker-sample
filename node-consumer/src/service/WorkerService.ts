@@ -4,6 +4,7 @@ import { Specification } from "../model/Specification";
 import { ElementExtractor } from "../utils/ElementExtractor";
 import { XsdChecker } from "../utils/XsdChecker";
 import { PersistenceService } from './PersistenceService';
+import { PaymentMessage } from '../model/PaymentMessage';
 
 export class WorkerService {
 
@@ -26,12 +27,14 @@ export class WorkerService {
 		this.dbConnector.saveSpecification(specification);
 	}
 
-	// work(payment: Payment): void {
-	// 	if (this.xsdChecker.checkXml(payment)) {
-	// 		// let result: ResultWrapper = this.elemExtractor.extract(payment);
-	// 		// this.dbConnector.saveResult(result);
-	// 	} else {
-	// 		// todo
-	// 	}
-	// }
+	work(payment: PaymentMessage): void {
+		if (this.xsdChecker.checkXml(payment)) {
+			console.log("xsd checks out start to work");
+			// let result: ResultWrapper = this.elemExtractor.extract(payment);
+			// this.dbConnector.saveResult(result);
+		} else {
+			// todo
+			console.log("xsd does not check out");
+		}
+	}
 }

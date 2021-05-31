@@ -1,58 +1,40 @@
 import { Document, Node } from 'libxmljs2';
-import { HighlightSpanKind } from 'typescript';
 import { Specification } from '../model/Specification';
 
 export class ResultWrapper {
 
-	private content: Document;
-	private extractedElem: Node;
-	private specification: Specification;
-	private sentTimestamp: Date;
-	private receivedTimestamp: Date;
-	private processedTimestamp: Date;
-
 	constructor(
-		message: Document,
-		extractedElem: Node,
-		specification: Specification,
-		sent: Date,
-		received: Date,
-		processed: Date
-	) {
-		this.content = message;
-		this.extractedElem = extractedElem;
-		this.specification = specification;
-		this.sentTimestamp = sent;
-		this.receivedTimestamp = received;
-		this.processedTimestamp = processed;
+		private _message: Document,
+		private _extractedElem: Node,
+		private _specification: Specification,
+		private _sentTimestamp: Date,
+		private _receivedTimestamp: Date,
+		private _processedTimestamp: Date
+	) {}
+
+	get message(): Document {
+		return this._message;
 	}
 
-
-	getMessage(): Document {
-		return this.content;
-	}
-
-	getExtractedElem(): Node {
-		return this.extractedElem;
+	get extractedElem(): Node {
+		return this._extractedElem;
 	}
 	
-	getSpecification(): Specification {
-		return this.specification;
+	get specification(): Specification {
+		return this._specification;
 	}
 
-	getSentTimestamp(): Date {
-		return this.sentTimestamp;
-	}
-
-
-	getReceivedTimestamp(): Date {
-		return this.receivedTimestamp;
-	}
-
-	getProcessedTimestamp(): Date {
-		return this.processedTimestamp;
+	get sentTimestamp(): Date {
+		return this._sentTimestamp;
 	}
 
 
+	get receivedTimestamp(): Date {
+		return this._receivedTimestamp;
+	}
+
+	get processedTimestamp(): Date {
+		return this._processedTimestamp;
+	}
 
 }

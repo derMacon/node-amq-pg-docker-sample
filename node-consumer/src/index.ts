@@ -1,4 +1,3 @@
-import { PaymentMessage } from './model/PaymentMessage';
 import { AmqService } from './service/AmqService';
 import { PersistenceService } from './service/PersistenceService';
 import { WorkerService } from './service/WorkerService';

@@ -9,8 +9,8 @@ export class Specification {
 		return this.specInput.specificationName;
 	}
 
-    get xsdContent(): Document {
-		return parseXmlString(this.specInput.xsdContent);
+    get xsdContent(): string {
+		return this.specInput.xsdContent;
 	}
 
 }
