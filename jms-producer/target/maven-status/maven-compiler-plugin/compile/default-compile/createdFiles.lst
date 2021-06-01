@@ -1,0 +1,15 @@
+dps\hoffmann\jmsproducer\Greeting.class
+dps\hoffmann\jmsproducer\service\BulkService.class
+dps\hoffmann\jmsproducer\GreetingController.class
+dps\hoffmann\jmsproducer\properties\SampleProperties.class
+dps\hoffmann\jmsproducer\controller\ApiController.class
+dps\hoffmann\jmsproducer\service\AmqService$1.class
+dps\hoffmann\jmsproducer\config\MapperConfig.class
+dps\hoffmann\jmsproducer\RestServiceCorsApplication.class
+dps\hoffmann\jmsproducer\model\SpecificationWrapper.class
+dps\hoffmann\jmsproducer\properties\ActivemqProperties.class
+dps\hoffmann\jmsproducer\utils\NameGenerator.class
+dps\hoffmann\jmsproducer\service\AmqService.class
+dps\hoffmann\jmsproducer\config\ActiveMqConfiguration.class
+dps\hoffmann\jmsproducer\RestServiceCorsApplication$1.class
+dps\hoffmann\jmsproducer\model\PaymentMessage.class
