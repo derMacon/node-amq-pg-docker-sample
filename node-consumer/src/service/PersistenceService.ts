@@ -7,13 +7,16 @@ import * as Xsd from '../model/Specification';
 
 export class PersistenceService {
 
-	private dbClient: PgDriver.Client;
+	private dbClient: PgDriver.Pool;
 
 	constructor() {
-		this.dbClient = new PgDriver.Client({
+		this.dbClient = new PgDriver.Pool({
 			host: process.env.PG_HOSTNAME,
 			database: process.env.PG_DATABASE_NAME,
 			user: process.env.PG_USER_NAME,
+			max: 20,
+			idleTimeoutMillis: 30000,
+  			connectionTimeoutMillis: 2000,
 			password: process.env.PG_USER_PASSWORD,
 			port: Number(process.env.PG_DATABASE_PORT),
 		});
