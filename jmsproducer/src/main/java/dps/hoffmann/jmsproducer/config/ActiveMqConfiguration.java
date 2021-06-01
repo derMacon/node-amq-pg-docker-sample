@@ -57,6 +57,9 @@ public class ActiveMqConfiguration {
     public JmsTemplate queueTemplate() {
         JmsTemplate jmsTemplate = new JmsTemplate();
         jmsTemplate.setConnectionFactory(cachingConnectionFactory());
+//        jmsTemplate.setSessionAcknowledgeModeName("CLIENT_ACKNOWLEDGE");
+//        jmsTemplate.setSessionTransacted(true);
+//        jmsTemplate.setSessionAcknowledgeModeName("client");
         return jmsTemplate;
     }
 
@@ -65,22 +68,22 @@ public class ActiveMqConfiguration {
 
 
 
-    @Bean
-    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(
-            ConnectionFactory connectionFactory) {
-        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-        factory.setPubSubDomain(true);
-        factory.setConnectionFactory(connectionFactory);
-        return factory;
-    }
-
-    @Bean(name="topicTemplate")
-    public JmsTemplate topicTemplate() {
-        JmsTemplate jmsTemplate = new JmsTemplate();
-        jmsTemplate.setConnectionFactory(cachingConnectionFactory());
-        jmsTemplate.setPubSubDomain(true);
-        return jmsTemplate;
-    }
+//    @Bean
+//    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(
+//            ConnectionFactory connectionFactory) {
+//        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+//        factory.setPubSubDomain(true);
+//        factory.setConnectionFactory(connectionFactory);
+//        return factory;
+//    }
+//
+//    @Bean(name="topicTemplate")
+//    public JmsTemplate topicTemplate() {
+//        JmsTemplate jmsTemplate = new JmsTemplate();
+//        jmsTemplate.setConnectionFactory(cachingConnectionFactory());
+//        jmsTemplate.setPubSubDomain(true);
+//        return jmsTemplate;
+//    }
 
 
 }

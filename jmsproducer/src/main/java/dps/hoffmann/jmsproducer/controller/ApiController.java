@@ -1,10 +1,12 @@
 package dps.hoffmann.jmsproducer.controller;
 
+import dps.hoffmann.jmsproducer.model.SpecificationWrapper;
 import dps.hoffmann.jmsproducer.service.BulkService;
 import dps.hoffmann.jmsproducer.service.AmqService;
 import dps.hoffmann.jmsproducer.utils.NameGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 @RequestMapping("/api/v1")
 @RestController
@@ -60,6 +63,14 @@ public class ApiController {
     public void refreshSampleXsd() {
         log.info("refresh specification");
         this.bulkMessengerService.refreshSpecs();
+    }
+
+
+    @RequestMapping("/specs")
+    @CrossOrigin(origins = "http://localhost:8283")
+    public List<SpecificationWrapper> getSpecs() {
+        log.info("return specs");
+        return this.bulkMessengerService.getSpecs();
     }
 
     /**

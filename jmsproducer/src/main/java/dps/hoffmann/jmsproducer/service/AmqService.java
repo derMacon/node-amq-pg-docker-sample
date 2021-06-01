@@ -25,9 +25,9 @@ public class AmqService {
     @Qualifier("queueTemplate")
     JmsTemplate jmsQueueTemplate;
 
-    @Autowired
-    @Qualifier("topicTemplate")
-    JmsTemplate jmsTopicTemplate;
+//    @Autowired
+//    @Qualifier("topicTemplate")
+//    JmsTemplate jmsTopicTemplate;
 
     @Autowired
     private ActivemqProperties activemqProperties;
@@ -56,17 +56,17 @@ public class AmqService {
         });
     }
 
-    public void sendXsdFormatTopic(SpecificationWrapper wrapper) {
-        log.info("xsd format: ", wrapper);
-        this.jmsTopicTemplate.send(this.activemqProperties.getTopic(), new MessageCreator() {
-            @SneakyThrows
-            @Override
-            public Message createMessage(Session session) throws JMSException {
-                String tmp = objectMapper.writeValueAsString(wrapper);
-                log.info("obj mapper: " + tmp);
-                return session.createTextMessage(objectMapper.writeValueAsString(wrapper));
-            }
-        });
-    }
+//    public void sendXsdFormatTopic(SpecificationWrapper wrapper) {
+//        log.info("xsd format: ", wrapper);
+//        this.jmsTopicTemplate.send(this.activemqProperties.getTopic(), new MessageCreator() {
+//            @SneakyThrows
+//            @Override
+//            public Message createMessage(Session session) throws JMSException {
+//                String tmp = objectMapper.writeValueAsString(wrapper);
+//                log.info("obj mapper: " + tmp);
+//                return session.createTextMessage(objectMapper.writeValueAsString(wrapper));
+//            }
+//        });
+//    }
 
 }
