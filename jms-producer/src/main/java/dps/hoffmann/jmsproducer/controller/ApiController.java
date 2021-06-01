@@ -6,10 +6,12 @@ import dps.hoffmann.jmsproducer.service.BulkService;
 import dps.hoffmann.jmsproducer.utils.NameGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,10 +30,14 @@ public class ApiController {
     @Autowired
     private BulkService bulkMessengerService;
 
+
     @RequestMapping("/")
     public String healthGet() {
         return "component is healthy";
     }
+
+
+    // ------------ sample message creation ------------ //
 
     @RequestMapping("/gen-txt-message")
     public String generateMessage() {
@@ -39,6 +45,15 @@ public class ApiController {
         amqService.sendTxtPaymentQueueMessage(txtMessage);
         return txtMessage;
     }
+
+    @RequestMapping("/refresh-sample-xsd")
+    public void refreshSampleXsd() {
+        log.info("refresh specification");
+        this.bulkMessengerService.refreshSpecs();
+    }
+
+
+    // ------------ benchmarking ------------ //
 
     @RequestMapping("/gen-xml-message")
     public String generateXmlMessage(
@@ -49,6 +64,9 @@ public class ApiController {
         return "sent " + msgCnt + " sample xml payment messages";
     }
 
+
+    // ------------ specification ------------ //
+
     @PostMapping("/upload-xsd")
     public void uploadSpecification(@RequestParam("file") MultipartFile inputFile) throws IOException,
             JAXBException, InterruptedException {
@@ -56,33 +74,20 @@ public class ApiController {
         log.info(new String(inputFile.getBytes()));
     }
 
-    @RequestMapping("/refresh-sample-xsd")
-    public void refreshSampleXsd() {
-        log.info("refresh specification");
-        this.bulkMessengerService.refreshSpecs();
+
+    @RequestMapping("/add-specs")
+    public void addSpecs(
+            @RequestParam String specificationName,
+            @RequestParam String xsdContent,
+            @RequestParam String xPath
+    ) {
+        this.bulkMessengerService.addXsdSpecification(specificationName, xsdContent, xPath);
     }
 
-
-    @RequestMapping("/specs")
-    @CrossOrigin(origins = "http://localhost:8283")
+    @RequestMapping("/get-specs")
     public List<SpecificationWrapper> getSpecs() {
         log.info("return specs");
         return this.bulkMessengerService.getSpecs();
     }
-
-    /**
-     * Saves a uploaded file to the external directory
-     * @param multipartFile file which the user uploaded
-     * @throws IOException error with io
-     */
-//    private void saveToExternalDir(MultipartFile multipartFile) throws IOException {
-//        File out = new File(externalPath + File.separator + multipartFile.getOriginalFilename());
-//        try (OutputStream os = new FileOutputStream(out)) {
-//            os.write(multipartFile.getBytes());
-//        }
-//    }
-
-
-
 
 }

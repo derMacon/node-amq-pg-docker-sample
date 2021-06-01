@@ -4,6 +4,7 @@ import dps.hoffmann.jmsproducer.model.PaymentMessage;
 import dps.hoffmann.jmsproducer.model.SpecificationWrapper;
 import dps.hoffmann.jmsproducer.properties.SampleProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -35,11 +36,6 @@ public class BulkService {
         refreshSpecs();
     }
 
-    public List<SpecificationWrapper> getSpecs() {
-        return this.specs;
-    }
-
-
     public void refreshSpecs() {
         addXsdSpecification(
                 sampleProperties.getSpecificationName(),
@@ -49,6 +45,10 @@ public class BulkService {
     }
 
 
+
+    public List<SpecificationWrapper> getSpecs() {
+        return this.specs;
+    }
 
     public void createBulkSamplePayment(int messageCnt, int timePeriod) {
         // todo timeperiod...
@@ -73,8 +73,12 @@ public class BulkService {
                 xPath
         );
 
-//        log.info("new specs: ", specification);
-//        amqService.sendXsdFormatTopic(specification);
+        log.info("new specs: ", specification);
+
+        if (specs.contains(specification)) {
+            throw new DuplicateKeyException("specification already exists: " + specificationName);
+        }
+
         specs.add(specification);
     }
 
