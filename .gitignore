@@ -39,26 +39,26 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
-jspm_packages/
+*/node_modules/
+*/jspm_packages/
 
 # Snowpack dependency directory (https://snowpack.dev/)
-web_modules/
+*/web_modules/
 
 # TypeScript cache
-*.tsbuildinfo
+*/*.tsbuildinfo
 
 # Optional npm cache directory
-.npm
+*/.npm
 
 # Optional eslint cache
-.eslintcache
+*/.eslintcache
 
 # Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
+*/.rpt2_cache/
+*/.rts2_cache_cjs/
+*/.rts2_cache_es/
+*/.rts2_cache_umd/
 
 # Optional REPL history
 .node_repl_history
