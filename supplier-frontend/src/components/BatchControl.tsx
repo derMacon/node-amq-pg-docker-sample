@@ -1,22 +1,32 @@
+import { Specification } from '../model/Specification'
+
 import React, { Component } from 'react';
 import axios from 'axios';
+
 const fetch = require('node-fetch');
 
 
 type BatchControlProps = {};
-type BatchControlState = {};
+type BatchControlState = {
+	specs: Specification[]
+};
 
 class BatchControl extends React.Component<BatchControlProps, BatchControlState> {
 
 	constructor(props: BatchControlProps) {
         super(props);
+		this.state = {
+			specs: []
+		}
+
+		this.updateState = this.updateState.bind(this);
 
 		console.log("before");
 		// axios.get("http://localhost:8284/greeting2", {}).then(resp => console.log(resp));
 
-		fetch('http://localhost:9000/')
-		.then(this.transform)
-		.then(this.mylog)
+		fetch('http://localhost:8284/api/v1/get-specs')
+			.then(this.transform)
+			.then(this.updateState)
 		console.log("after");
 	}
 
@@ -24,13 +34,20 @@ class BatchControl extends React.Component<BatchControlProps, BatchControlState>
 		return e.text();
 	}
 
-	mylog(e:any) {
-		console.log(e);
+	updateState(e:string) {
+		let inputElems: Specification[] = JSON.parse(e);
+		const that = this;
+		inputElems.forEach(elem => {
+			this.setState( prevState => ({
+				specs: [...prevState.specs, elem]
+			}));
+		})
 	}
 
 
 	
     render() {
+		console.log("state: ", this.state);
         return (
 			<div className="p-5">
 				{/* <form className="form-inline">
