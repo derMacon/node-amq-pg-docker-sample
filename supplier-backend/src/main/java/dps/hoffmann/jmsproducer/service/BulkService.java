@@ -1,7 +1,6 @@
 package dps.hoffmann.jmsproducer.service;
 
 import dps.hoffmann.jmsproducer.model.Payment;
-import dps.hoffmann.jmsproducer.model.PaymentMessage;
 import dps.hoffmann.jmsproducer.model.SpecificationWrapper;
 import dps.hoffmann.jmsproducer.properties.SamplePaymentProperties;
 import dps.hoffmann.jmsproducer.properties.SampleSpecificationProperties;
@@ -9,7 +8,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,19 +75,32 @@ public class BulkService {
     }
 
 
-    public void createBulkSamplePayment(int messageCnt, int timePeriod) {
-        // todo timeperiod...
-        log.info("create bulk sample payment: {messageCnt: {}, timePeriod: {}}", messageCnt, timePeriod);
-        String sampleXmlContent = readResource(this.samplePaymentProperties.getXmlres());
+    public void benchmark(
+            String paymentName,
+            String specName,
+            int messageCnt,
+            int timePeriod
+    ) {
+        log.info("starting benchmark with following data: \n{" +
+                        "\n\tpaymentName: {}" +
+                        "\n\tspecName: {}" +
+                        "\n\tmessageCnt: {}" +
+                        "\n\ttimePeriod: {}" +
+                        "\n}", paymentName, specName, messageCnt, timePeriod
+        );
 
-        for (int i = 0; i < messageCnt; i++) {
-            PaymentMessage wrapper = new PaymentMessage(
-                    sampleXmlContent,
-                    sampleSpecificationProperties.getSpecificationName(),
-                    new Timestamp(System.currentTimeMillis())
-            );
-            amqService.sendObjPaymentQueueMessage(wrapper);
-        }
+        // todo timeperiod...
+//        log.info("create bulk sample payment: {messageCnt: {}, timePeriod: {}}", messageCnt, timePeriod);
+//        String sampleXmlContent = readResource(this.samplePaymentProperties.getXmlres());
+//
+//        for (int i = 0; i < messageCnt; i++) {
+//            PaymentMessage wrapper = new PaymentMessage(
+//                    sampleXmlContent,
+//                    sampleSpecificationProperties.getSpecificationName(),
+//                    new Timestamp(System.currentTimeMillis())
+//            );
+//            amqService.sendObjPaymentQueueMessage(wrapper);
+//        }
     }
 
     public void addXsdSpecification(String specificationName, String xsdContent, String xPath) {

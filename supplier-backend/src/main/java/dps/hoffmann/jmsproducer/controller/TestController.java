@@ -15,9 +15,9 @@ public class TestController {
     }
 
     @RequestMapping("/")
-    public String testCall2() {
-        log.info("another one");
-        return "another one";
+    public String health() {
+        log.info("component is healthy");
+        return "component is healthy";
     }
 
 }

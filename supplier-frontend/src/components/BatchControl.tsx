@@ -114,6 +114,11 @@ class BatchControl extends React.Component<BatchControlProps, BatchControlState>
 	}
 
 
+	handleSubmit(event: any) {
+		event.preventDefault();
+		console.log("submit event: ", event)
+	}
+
 	
     render() {
 		console.log("state bef: ", this.state)
@@ -123,7 +128,7 @@ class BatchControl extends React.Component<BatchControlProps, BatchControlState>
 
         return (
 			<div className="p-5">
-				<form>
+				<form onSubmit={this.handleSubmit}>
 					<div>
 						{availablePaymentsPane}
 						{availableSpecsPane}
@@ -141,6 +146,7 @@ class BatchControl extends React.Component<BatchControlProps, BatchControlState>
 							<input type="text" className="form-control" id="timespan" value="0" required/>
 						</div>
 					</div>
+					{/* <input className="btn btn-primary" type="submit"/> */}
 					<button className="btn btn-primary" type="submit">Start Batch</button>
 				</form>
             </div>
