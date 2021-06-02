@@ -1,3 +1,6 @@
+import axios from "axios";
+import AxiosResponse from "axios";
+
 // import { Document, parseXmlString } from 'libxmljs2';
 // import { Specification } from '../model/Specification';
 // import { PaymentMessage } from '../model/PaymentMessage';
@@ -7,6 +10,23 @@
 // // const Diff = require('diff');
 
 export class XsdChecker {
+
+	private xsdSpecification: string = "";
+
+	constructor() {
+		axios.get('http://localhost:8284/api/v1/spec/xsd')
+			.then(e => this.xsdSpecification = e.data)
+	}
+
+
+	checkXml(xmlPaymentMessage: string): boolean {
+		console.log('xml check: ', this.xsdSpecification);
+		return true;
+	}
+
+
+
+
 
 // 	private xsdSpecification: Specification[] = [];
 

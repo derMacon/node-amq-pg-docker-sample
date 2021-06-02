@@ -7,45 +7,45 @@ import { parseXmlString } from "libxmljs2";
 
 require('dotenv').config();
 
-// let workerService: WorkerService = new WorkerService(
-// 	new ElementExtractor(),
-// 	new XsdChecker(),
-// 	new PersistenceService()
-// );
+let workerService: WorkerService = new WorkerService(
+	new XsdChecker(),
+	new ElementExtractor(),
+	new PersistenceService()
+);
 
-// new AmqService(workerService).connectBroker();
+new AmqService(workerService).connectBroker();
 
  
 
-const axios = require('axios');
-const fetch = require('node-fetch');
+// const axios = require('axios');
+// const fetch = require('node-fetch');
 
-class Test {
-	callapi() {
-		axios.get('http://localhost:8284/api/v1/test').then(this.doSomething);
-		// axios.get('http://localhost:8283/api/v1/specs', { crossdomain: true }).then(this.doSomething);
-		// fetch('http://localhost:8283/api/v1/specs')
-		// fetch('http://localhost:8284/api/v1/')
-		// fetch('http://localhost:8284/api/v1/specs')
-		// fetch('http://localhost:8284/api/v1/test')
-		// 	.then(this.transform)
-		// 	.then(this.mylog)
-	}
+// class Test {
+// 	callapi() {
+// 		axios.get('http://localhost:8284/api/v1/spec/xsd').then(this.doSomething);
+// 		// axios.get('http://localhost:8283/api/v1/specs', { crossdomain: true }).then(this.doSomething);
+// 		// fetch('http://localhost:8283/api/v1/specs')
+// 		// fetch('http://localhost:8284/api/v1/')
+// 		// fetch('http://localhost:8284/api/v1/specs')
+// 		// fetch('http://localhost:8284/api/v1/test')
+// 		// 	.then(this.transform)
+// 		// 	.then(this.mylog)
+// 	}
 
-	transform(e: any) {
-		return e.text();
-	}
+// 	transform(e: any) {
+// 		return e.text();
+// 	}
 
-	mylog(e:any) {
-		console.log(e);
-	}
+// 	mylog(e:any) {
+// 		console.log(e);
+// 	}
 
-	doSomething(e: any) {
-		console.log('elem e: ', e);
-	}
-}
+// 	doSomething(e: any) {
+// 		console.log('elem e: ', e);
+// 	}
+// }
 
-new Test().callapi();
+// new Test().callapi();
 
 // fetch('https://github.com/')
 //     .then(res:any => res.text())
