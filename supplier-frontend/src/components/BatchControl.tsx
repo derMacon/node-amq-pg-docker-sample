@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+const fetch = require('node-fetch');
+
 
 type BatchControlProps = {};
 type BatchControlState = {};
@@ -7,7 +10,25 @@ class BatchControl extends React.Component<BatchControlProps, BatchControlState>
 
 	constructor(props: BatchControlProps) {
         super(props);
+
+		console.log("before");
+		// axios.get("http://localhost:8284/greeting2", {}).then(resp => console.log(resp));
+
+		fetch('http://localhost:9000/')
+		.then(this.transform)
+		.then(this.mylog)
+		console.log("after");
 	}
+
+	transform(e: any) {
+		return e.text();
+	}
+
+	mylog(e:any) {
+		console.log(e);
+	}
+
+
 	
     render() {
         return (
@@ -35,7 +56,7 @@ class BatchControl extends React.Component<BatchControlProps, BatchControlState>
 						<div className="col-md-2 mb-3">
 						<label htmlFor="xmlInput">XML Input</label>
 						<select className="form-select" id="xmlInput" aria-label="Default select example">
-							<option value="1" selected>default payment</option>
+							<option value="1" selected>Default Payment</option>
 							<option value="2">Two</option>
 							<option value="3">Three</option>
 						</select>
@@ -43,23 +64,28 @@ class BatchControl extends React.Component<BatchControlProps, BatchControlState>
 						<div className="col-md-2 mb-3">
 						<label htmlFor="xsdInput">XML Input</label>
 						<select className="form-select" id="xsdInput" aria-label="Default select example">
-							<option value="1" selected>default specification</option>
+							<option value="1" selected>Default Specification</option>
 							<option value="2">Two</option>
 							<option value="3">Three</option>
 						</select>
 						</div>
 
 						<div className="col-md-2 mb-3">
-						<label htmlFor="quantity">quantity</label>
-						<input type="text" className="form-control" id="quantity" value="1" required/>
+							<label htmlFor="xpath">xPath</label>
+							<input type="text" className="form-control" id="xpath" disabled/>
 						</div>
 
 						<div className="col-md-2 mb-3">
-						<label htmlFor="timespan">timespan</label>
-						<input type="text" className="form-control" id="timespan" value="0" required/>
+							<label htmlFor="quantity">Quantity</label>
+							<input type="text" className="form-control" id="quantity" value="1" required/>
+						</div>
+
+						<div className="col-md-2 mb-3">
+							<label htmlFor="timespan">Timespan</label>
+							<input type="text" className="form-control" id="timespan" value="0" required/>
 						</div>
 					</div>
-					<button className="btn btn-primary" type="submit">Submit form</button>
+					<button className="btn btn-primary" type="submit">Start Batch</button>
 				</form>
             </div>
         );

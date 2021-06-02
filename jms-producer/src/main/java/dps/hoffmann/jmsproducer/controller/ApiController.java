@@ -33,6 +33,7 @@ public class ApiController {
 
     @RequestMapping("/")
     public String healthGet() {
+        log.info("user called health endpoint");
         return "component is healthy";
     }
 

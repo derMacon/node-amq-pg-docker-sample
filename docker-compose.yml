@@ -35,6 +35,15 @@ services:
     volumes:
       - script-db:/var/lib/postgresql/data
     restart: unless-stopped
+    
+  jms-producer:
+    image: jms-producer
+    container_name: jms-producer
+    ports:
+      - "8284:8284"
+    restart: unless-stopped
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
 
 volumes:
   script-db:
