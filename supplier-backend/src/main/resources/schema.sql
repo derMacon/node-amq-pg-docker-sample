@@ -1,15 +1,12 @@
-SET timezone = 'Europe/Paris';
-
-create table if not exists formular
+create table if not exists specification
 (
-    form_id serial primary key,
-    received_timestamp timestamptz not null,
-    processing_duration serial,
-    file_name varchar(5000) not null unique,
-    file_type varchar(20) not null,
-    file_size serial,
-    content text not null,
-    tenant_id serial,
-    source_drive varchar(20) not null,
-    check (tenant_id >= 0 and tenant_id < 10000)
+    specification_id serial primary key,
+    specification_name varchar(200) not null,
+    xsd_content text not null
 );
+
+# create table if not exists extraction_path
+# (
+#     path_id serial primary key,
+#     xpath varchar(200) not null,
+# );
