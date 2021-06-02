@@ -1,6 +1,5 @@
 package dps.hoffmann.jmsproducer.controller;
 
-import dps.hoffmann.jmsproducer.model.Payment;
 import dps.hoffmann.jmsproducer.service.BulkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

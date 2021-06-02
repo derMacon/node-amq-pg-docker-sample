@@ -8,6 +8,6 @@ import java.sql.Timestamp;
 @Value
 public class PaymentMessage implements Serializable {
     private final String content;
-    private final String specificationName;
+    private final String xPath;
     private final Timestamp sentTimestamp;
 }

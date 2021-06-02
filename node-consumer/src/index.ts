@@ -8,8 +8,8 @@ import { parseXmlString } from "libxmljs2";
 require('dotenv').config();
 
 // let workerService: WorkerService = new WorkerService(
-// 	new ElementExtractor(),
 // 	new XsdChecker(),
+// 	new ElementExtractor(),
 // 	new PersistenceService()
 // );
 
@@ -22,12 +22,14 @@ const fetch = require('node-fetch');
 
 class Test {
 	callapi() {
-		// axios.get('https://jsonplaceholder.typicode.com/todos/1').then(this.doSomething);
+		// axios.get('http://localhost:8284/api/v1/spec/xsd').then(this.doSomething);
 		// axios.get('http://localhost:8283/api/v1/specs', { crossdomain: true }).then(this.doSomething);
 		// fetch('http://localhost:8283/api/v1/specs')
-		fetch('http://localhost:8284/api/v1/')
+		// fetch('http://localhost:8284/api/v1/')
 		// fetch('http://localhost:8284/api/v1/specs')
-		// fetch('http://localhost:9000/')
+		// fetch('http://localhost:8284/api/v1/spec/xsd')
+		fetch('http://localhost:8080/greeting-javaconfig')
+		// fetch('http://localhost:8080/greeting')
 			.then(this.transform)
 			.then(this.mylog)
 	}
@@ -46,6 +48,12 @@ class Test {
 }
 
 new Test().callapi();
+
+
+
+
+
+
 
 // fetch('https://github.com/')
 //     .then(res:any => res.text())

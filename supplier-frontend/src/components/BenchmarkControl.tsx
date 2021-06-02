@@ -116,10 +116,10 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 		let json: string = JSON.stringify(this.state.benchRequest!);
 		console.log("out json: ", json);
 		console.log("out obj: ", this.state.benchRequest);
-		// axios.post('http://localhost:8284/api/v1/benchmark/start', json)
-		//   .then(function (response) {
-		// 	console.log(response);
-		//   })
+		axios.post('http://localhost:8284/api/v1/benchmark/start', this.state.benchRequest)
+		  .then(function (response) {
+			console.log(response);
+		  })
 	}
 
 	
