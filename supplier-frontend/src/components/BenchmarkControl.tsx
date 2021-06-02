@@ -9,7 +9,7 @@ const fetch = require('node-fetch');
 
 type BenchmarkControlProps = {};
 type BenchmarkControlState = {
-	benchRequest: BenchmarkRequest | undefined;
+	benchRequest: BenchmarkRequest;
 	paymentOptions: string[];
 	pathOptions: string[];
 };
@@ -19,13 +19,14 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 	constructor(props: BenchmarkControlProps) {
         super(props);
 		this.state = {
-			benchRequest: undefined,
+			benchRequest: new BenchmarkRequest(),
 			paymentOptions: [],
 			pathOptions: []
 		}
 
 		this.renderXPath = this.renderXPath.bind(this);
 		this.fetchPaymentOptions = this.fetchPaymentOptions.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	componentDidMount() {
@@ -80,10 +81,18 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 	}
 
 	renderXPath() {
+		if (this.state.pathOptions.length > 0) {
+			let fstElem: string = this.state.pathOptions[0]
+			this.state.benchRequest.pathOption = fstElem;
+		}
 		return this.renderSelection('xpath', this.state.pathOptions);
 	}
 
 	renderPaymentPane() {
+		if (this.state.paymentOptions.length > 0) {
+			let fstElem: string = this.state.paymentOptions[0]
+			this.state.benchRequest.paymentOption = fstElem;
+		}
 		return this.renderSelection('payment', this.state.paymentOptions);
 	}
 
@@ -104,11 +113,10 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 
 		// fetch('http://localhost:8284/api/v1/get-specs')
 
-		// axios.get('http://localhost:8284/api/v1/benchmark/start', {
-		// 	params: {
-		// 	  paymentName: 
-		// 	}
-		//   })
+		let json: string = JSON.stringify(this.state.benchRequest!);
+		console.log("out json: ", json);
+		console.log("out obj: ", this.state.benchRequest);
+		// axios.post('http://localhost:8284/api/v1/benchmark/start', json)
 		//   .then(function (response) {
 		// 	console.log(response);
 		//   })
@@ -116,10 +124,9 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 
 	
     render() {
-		console.log("------------ state bef: ", this.state)
-
 		let xPathPane: React.ReactNode = this.renderXPath();
 		let paymentPane: React.ReactNode = this.renderPaymentPane();
+		console.log("hier")
 
         return (
 			<div className="p-5">
