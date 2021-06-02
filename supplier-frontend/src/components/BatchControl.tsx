@@ -8,7 +8,8 @@ const fetch = require('node-fetch');
 
 type BatchControlProps = {};
 type BatchControlState = {
-	specs: Specification[]
+	availableSpecs: Specification[],
+	currSpec: Specification | undefined,
 };
 
 class BatchControl extends React.Component<BatchControlProps, BatchControlState> {
@@ -16,88 +17,91 @@ class BatchControl extends React.Component<BatchControlProps, BatchControlState>
 	constructor(props: BatchControlProps) {
         super(props);
 		this.state = {
-			specs: []
+			availableSpecs: [],
+			currSpec: undefined
 		}
 
-		this.updateState = this.updateState.bind(this);
+		this.fetchAvailableSpecs = this.fetchAvailableSpecs.bind(this);
+		this.setCurrSpec = this.setCurrSpec.bind(this);
+		this.renderAvailableSpecs = this.renderAvailableSpecs.bind(this);
 
 		console.log("before");
 		// axios.get("http://localhost:8284/greeting2", {}).then(resp => console.log(resp));
 
 		fetch('http://localhost:8284/api/v1/get-specs')
 			.then(this.transform)
-			.then(this.updateState)
+			.then(this.fetchAvailableSpecs)
 		console.log("after");
+
 	}
 
 	transform(e: any) {
 		return e.text();
 	}
 
-	updateState(e:string) {
+	fetchAvailableSpecs(e:any) {
 		let inputElems: Specification[] = JSON.parse(e);
-		const that = this;
 		inputElems.forEach(elem => {
 			this.setState( prevState => ({
-				specs: [...prevState.specs, elem]
+				availableSpecs: [...prevState.availableSpecs, elem]
 			}));
 		})
+
+		console.log("after updated state", this.state);
+		this.setCurrSpec(this.state.availableSpecs[0])
+	}
+
+	setCurrSpec(curr: Specification) {
+		this.setState({ currSpec: curr });
+	}
+
+
+	renderAvailableSpecs() {
+		console.log("av 1sp: ", this.state.availableSpecs)
+		return <div className="mb-3">
+			<label htmlFor="xsdInput">XSD Input</label>
+			<select className="form-select" id="xsdInput" aria-label="Default select example">
+				{this.state.availableSpecs.map(elem => {
+					return <option key={elem.specificationName}>{elem.specificationName}</option>
+				})}
+			</select>
+		</div>
 	}
 
 
 	
     render() {
-		console.log("state: ", this.state);
+		console.log("state bef: ", this.state)
+		let currXPath: string | undefined = this.state.currSpec?.xpath;
+		let availableSpecsPane = this.renderAvailableSpecs();
+
         return (
 			<div className="p-5">
-				{/* <form className="form-inline">
-				<div className="form-group mb-2">
-					<label htmlFor="staticEmail2" className="sr-only">Email</label>
-					<input type="text" className="form-control-plaintext" id="staticEmail2" value="email@example.com"/>
-				</div>
-				<div className="form-group mx-sm-3 mb-2">
-					<label htmlFor="inputPassword2" className="sr-only">Password</label>
-					<input type="password" className="form-control" id="inputPassword2" placeholder="Password"/>
-				</div>
-				<button type="submit" className="btn btn-primary mb-2">Confirm identity</button>
-				</form> */}
-
-				{/* <div className="d-inline-flex flex-row">
-					<label className="p-2 p-2 col-form-label" htmlFor="xmlChoice">Email</label>
-					<input className="p-2 form-control" type="text"  id="xmlChoice"/>
-					<input className="p-2 custom-file-input" type="file" id="customFile"/>
-				</div> */}
-
 				<form>
-					<div className="form-row">
-						<div className="col-md-2 mb-3">
-						<label htmlFor="xmlInput">XML Input</label>
-						<select className="form-select" id="xmlInput" aria-label="Default select example">
-							<option value="1" selected>Default Payment</option>
-							<option value="2">Two</option>
-							<option value="3">Three</option>
-						</select>
-						</div>
-						<div className="col-md-2 mb-3">
-						<label htmlFor="xsdInput">XML Input</label>
-						<select className="form-select" id="xsdInput" aria-label="Default select example">
-							<option value="1" selected>Default Specification</option>
-							<option value="2">Two</option>
-							<option value="3">Three</option>
-						</select>
+					<div>
+						<div className="mb-3">
+							<label htmlFor="xmlInput">XML Input</label>
+							<select className="form-select" id="xmlInput" aria-label="Default select example">
+								<option value="1" selected>Default Payment</option>
+								<option value="2">Two</option>
+								<option value="3">Three</option>
+							</select>
 						</div>
 
-						<div className="col-md-2 mb-3">
+						{availableSpecsPane}
+
+						<div className="mb-3">
 							<label htmlFor="xpath">xPath</label>
-							<input type="text" className="form-control" id="xpath" disabled/>
+							<input type="text" className="form-control" id="xpath" value={currXPath} disabled/>
+							{/* <input type="text" className="form-control" id="xpath" value={this.state.currSpec.xpath} disabled/> */}
 						</div>
 
-						<div className="col-md-2 mb-3">
+						<div className="mb-3">
 							<label htmlFor="quantity">Quantity</label>
 							<input type="text" className="form-control" id="quantity" value="1" required/>
 						</div>
 
-						<div className="col-md-2 mb-3">
+						<div className="mb-3">
 							<label htmlFor="timespan">Timespan</label>
 							<input type="text" className="form-control" id="timespan" value="0" required/>
 						</div>

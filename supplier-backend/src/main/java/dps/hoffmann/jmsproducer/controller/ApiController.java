@@ -63,6 +63,20 @@ public class ApiController {
     }
 
 
+    // ------------ payment ------------ //
+
+    @RequestMapping("/add-payment")
+    public void addPayment(@RequestParam String xmlContent) {
+        log.info("add payment");
+        this.bulkMessengerService.addPayment(xmlContent);
+    }
+
+    @RequestMapping("/get-payments")
+    public List<String> getPayments() {
+        log.info("return payments");
+        return this.bulkMessengerService.getPayments();
+    }
+
     // ------------ specification ------------ //
 
     @PostMapping("/upload-xsd")

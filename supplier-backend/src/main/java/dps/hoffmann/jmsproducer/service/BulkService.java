@@ -2,7 +2,11 @@ package dps.hoffmann.jmsproducer.service;
 
 import dps.hoffmann.jmsproducer.model.PaymentMessage;
 import dps.hoffmann.jmsproducer.model.SpecificationWrapper;
-import dps.hoffmann.jmsproducer.properties.SampleProperties;
+import dps.hoffmann.jmsproducer.properties.SamplePaymentProperties;
+import dps.hoffmann.jmsproducer.properties.SampleSpecificationProperties;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -18,47 +22,64 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@Getter
 public class BulkService {
 
-    private SampleProperties sampleProperties;
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private SampleSpecificationProperties sampleSpecificationProperties;
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private SamplePaymentProperties samplePaymentProperties;
+
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private AmqService amqService;
 
+    @Setter(AccessLevel.NONE)
     private List<SpecificationWrapper> specs = new ArrayList<>();
+
+    @Setter(AccessLevel.NONE)
+    private List<String> payments = new ArrayList<>();
 
     public BulkService(
             AmqService amqService,
-            SampleProperties sampleProperties
+            SampleSpecificationProperties sampleSpecificationProperties
     ) {
         this.amqService = amqService;
-        this.sampleProperties = sampleProperties;
+        this.sampleSpecificationProperties = sampleSpecificationProperties;
 
         refreshSpecs();
+        refreshPayments();
     }
 
     public void refreshSpecs() {
         addXsdSpecification(
-                sampleProperties.getSpecificationName(),
-                readResource(sampleProperties.getXsdres()),
-                sampleProperties.getXPath()
+                sampleSpecificationProperties.getSpecificationName(),
+                readResource(sampleSpecificationProperties.getXsdres()),
+                sampleSpecificationProperties.getXPath()
         );
     }
 
+    public void refreshPayments() {
 
-
-    public List<SpecificationWrapper> getSpecs() {
-        return this.specs;
     }
+
+    public void addPayment(String payment) {
+        this.payments.add(payment);
+    }
+
 
     public void createBulkSamplePayment(int messageCnt, int timePeriod) {
         // todo timeperiod...
         log.info("create bulk sample payment: {messageCnt: {}, timePeriod: {}}", messageCnt, timePeriod);
-        String sampleXmlContent = readResource(this.sampleProperties.getXmlres());
+        String sampleXmlContent = readResource(this.samplePaymentProperties.getXmlres());
 
         for (int i = 0; i < messageCnt; i++) {
             PaymentMessage wrapper = new PaymentMessage(
                     sampleXmlContent,
-                    sampleProperties.getSpecificationName(),
+                    sampleSpecificationProperties.getSpecificationName(),
                     new Timestamp(System.currentTimeMillis())
             );
             amqService.sendObjPaymentQueueMessage(wrapper);
