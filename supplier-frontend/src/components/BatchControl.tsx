@@ -1,4 +1,5 @@
 import { Specification } from '../model/Specification'
+import { PaymentInput } from '../model/PaymentInput'
 
 import React, { Component } from 'react';
 import axios from 'axios';
@@ -9,6 +10,7 @@ const fetch = require('node-fetch');
 type BatchControlProps = {};
 type BatchControlState = {
 	availableSpecs: Specification[],
+	availablePayments: PaymentInput[],
 	currSpec: Specification | undefined,
 };
 
@@ -18,12 +20,15 @@ class BatchControl extends React.Component<BatchControlProps, BatchControlState>
         super(props);
 		this.state = {
 			availableSpecs: [],
+			availablePayments: [],
 			currSpec: undefined
 		}
 
 		this.fetchAvailableSpecs = this.fetchAvailableSpecs.bind(this);
 		this.setCurrSpec = this.setCurrSpec.bind(this);
 		this.renderAvailableSpecs = this.renderAvailableSpecs.bind(this);
+		this.fetchAvailablePayments = this.fetchAvailablePayments.bind(this);
+		this.renderXPath = this.renderXPath.bind(this);
 
 		console.log("before");
 		// axios.get("http://localhost:8284/greeting2", {}).then(resp => console.log(resp));
@@ -31,6 +36,11 @@ class BatchControl extends React.Component<BatchControlProps, BatchControlState>
 		fetch('http://localhost:8284/api/v1/get-specs')
 			.then(this.transform)
 			.then(this.fetchAvailableSpecs)
+
+		fetch('http://localhost:8284/api/v1/get-payments')
+			.then(this.transform)
+			.then(this.fetchAvailablePayments)
+
 		console.log("after");
 
 	}
@@ -39,7 +49,7 @@ class BatchControl extends React.Component<BatchControlProps, BatchControlState>
 		return e.text();
 	}
 
-	fetchAvailableSpecs(e:any) {
+	fetchAvailableSpecs(e: any) {
 		let inputElems: Specification[] = JSON.parse(e);
 		inputElems.forEach(elem => {
 			this.setState( prevState => ({
@@ -47,17 +57,44 @@ class BatchControl extends React.Component<BatchControlProps, BatchControlState>
 			}));
 		})
 
-		console.log("after updated state", this.state);
 		this.setCurrSpec(this.state.availableSpecs[0])
 	}
 
+	// todo maybe integrate it directly in calling method?? dont know if its necessary for later (callback handlers...)
 	setCurrSpec(curr: Specification) {
 		this.setState({ currSpec: curr });
 	}
 
+	fetchAvailablePayments(e: any) {
+		console.log("works: ", e);
+
+		let inputElems: PaymentInput[] = JSON.parse(e);
+		inputElems.forEach(elem => {
+			this.setState( prevState => ({
+				availablePayments: [...prevState.availablePayments, elem]
+			}));
+		})
+
+	}
+
+
+
+
+
+	renderAvailablePayments() {
+		return <div className="mb-3">
+			<label htmlFor="xsdInput">XML Input</label>
+			<select className="form-select" id="xsdInput" aria-label="Default select example">
+				{this.state.availablePayments.map(elem => {
+					return <option key={elem.paymentName}>{elem.paymentName}</option>
+				})}
+			</select>
+		</div>
+	}
+
+
 
 	renderAvailableSpecs() {
-		console.log("av 1sp: ", this.state.availableSpecs)
 		return <div className="mb-3">
 			<label htmlFor="xsdInput">XSD Input</label>
 			<select className="form-select" id="xsdInput" aria-label="Default select example">
@@ -68,33 +105,31 @@ class BatchControl extends React.Component<BatchControlProps, BatchControlState>
 		</div>
 	}
 
+	renderXPath() {
+		let currXPath: string | undefined = this.state.currSpec?.xpath;
+		return <div className="mb-3">
+					<label htmlFor="xpath">xPath</label>
+					<input type="text" className="form-control" id="xpath" value={currXPath} disabled/>
+				</div>
+	}
+
 
 	
     render() {
 		console.log("state bef: ", this.state)
-		let currXPath: string | undefined = this.state.currSpec?.xpath;
+		let availablePaymentsPane = this.renderAvailablePayments();
 		let availableSpecsPane = this.renderAvailableSpecs();
+		let xPathPane = this.renderXPath();
 
         return (
 			<div className="p-5">
 				<form>
 					<div>
-						<div className="mb-3">
-							<label htmlFor="xmlInput">XML Input</label>
-							<select className="form-select" id="xmlInput" aria-label="Default select example">
-								<option value="1" selected>Default Payment</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
-							</select>
-						</div>
-
+						{availablePaymentsPane}
 						{availableSpecsPane}
+						{xPathPane}
 
-						<div className="mb-3">
-							<label htmlFor="xpath">xPath</label>
-							<input type="text" className="form-control" id="xpath" value={currXPath} disabled/>
-							{/* <input type="text" className="form-control" id="xpath" value={this.state.currSpec.xpath} disabled/> */}
-						</div>
+						
 
 						<div className="mb-3">
 							<label htmlFor="quantity">Quantity</label>

@@ -1,5 +1,6 @@
 package dps.hoffmann.jmsproducer.service;
 
+import dps.hoffmann.jmsproducer.model.Payment;
 import dps.hoffmann.jmsproducer.model.PaymentMessage;
 import dps.hoffmann.jmsproducer.model.SpecificationWrapper;
 import dps.hoffmann.jmsproducer.properties.SamplePaymentProperties;
@@ -8,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
@@ -41,14 +43,16 @@ public class BulkService {
     private List<SpecificationWrapper> specs = new ArrayList<>();
 
     @Setter(AccessLevel.NONE)
-    private List<String> payments = new ArrayList<>();
+    private List<Payment> payments = new ArrayList<>();
 
     public BulkService(
             AmqService amqService,
-            SampleSpecificationProperties sampleSpecificationProperties
+            SampleSpecificationProperties sampleSpecificationProperties,
+            SamplePaymentProperties samplePaymentProperties
     ) {
         this.amqService = amqService;
         this.sampleSpecificationProperties = sampleSpecificationProperties;
+        this.samplePaymentProperties = samplePaymentProperties;
 
         refreshSpecs();
         refreshPayments();
@@ -63,11 +67,14 @@ public class BulkService {
     }
 
     public void refreshPayments() {
-
+        addPayment(
+                samplePaymentProperties.getPaymentName(),
+                samplePaymentProperties.getXmlres()
+        );
     }
 
-    public void addPayment(String payment) {
-        this.payments.add(payment);
+    public void addPayment(String paymentName, String xmlContent) {
+        this.payments.add(new Payment(paymentName, xmlContent));
     }
 
 

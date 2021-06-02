@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(ignoreUnknownFields = false, prefix = "sample.payment")
+@ConfigurationProperties(prefix = "sample.payment")
 public class SamplePaymentProperties {
     private String xmlres;
+    private String paymentName;
 }

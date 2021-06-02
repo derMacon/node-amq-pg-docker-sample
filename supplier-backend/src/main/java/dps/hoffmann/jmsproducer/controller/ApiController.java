@@ -1,5 +1,6 @@
 package dps.hoffmann.jmsproducer.controller;
 
+import dps.hoffmann.jmsproducer.model.Payment;
 import dps.hoffmann.jmsproducer.model.SpecificationWrapper;
 import dps.hoffmann.jmsproducer.service.AmqService;
 import dps.hoffmann.jmsproducer.service.BulkService;
@@ -66,13 +67,16 @@ public class ApiController {
     // ------------ payment ------------ //
 
     @RequestMapping("/add-payment")
-    public void addPayment(@RequestParam String xmlContent) {
-        log.info("add payment");
-        this.bulkMessengerService.addPayment(xmlContent);
+    public void addPayment(
+            @RequestParam String paymentName,
+            @RequestParam String xmlContent
+    ) {
+        log.info("add payment: " + paymentName);
+        this.bulkMessengerService.addPayment(paymentName, xmlContent);
     }
 
     @RequestMapping("/get-payments")
-    public List<String> getPayments() {
+    public List<Payment> getPayments() {
         log.info("return payments");
         return this.bulkMessengerService.getPayments();
     }
