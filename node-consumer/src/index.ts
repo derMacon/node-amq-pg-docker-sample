@@ -25,9 +25,9 @@ class Test {
 		// axios.get('https://jsonplaceholder.typicode.com/todos/1').then(this.doSomething);
 		// axios.get('http://localhost:8283/api/v1/specs', { crossdomain: true }).then(this.doSomething);
 		// fetch('http://localhost:8283/api/v1/specs')
-		// fetch('http://localhost:8284/api/v1/')
+		fetch('http://localhost:8284/api/v1/')
 		// fetch('http://localhost:8284/api/v1/specs')
-		fetch('http://localhost:9000/')
+		// fetch('http://localhost:9000/')
 			.then(this.transform)
 			.then(this.mylog)
 	}
