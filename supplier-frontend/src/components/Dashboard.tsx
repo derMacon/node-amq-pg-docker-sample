@@ -1,6 +1,6 @@
 import React from 'react';
 
-import BatchControl from './BatchControl';
+import BenchmarkControl from './BenchmarkControl';
 
 type DashboardProps = {};
 type DashboardState = {};
@@ -14,7 +14,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     render() {
         return (
             <div className="">
-				<BatchControl/>
+				<BenchmarkControl/>
             </div>
         );
     }

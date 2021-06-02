@@ -76,17 +76,13 @@ public class BulkService {
 
 
     public void benchmark(
-            String paymentName,
-            String specName,
             int messageCnt,
             int timePeriod
     ) {
         log.info("starting benchmark with following data: \n{" +
-                        "\n\tpaymentName: {}" +
-                        "\n\tspecName: {}" +
                         "\n\tmessageCnt: {}" +
                         "\n\ttimePeriod: {}" +
-                        "\n}", paymentName, specName, messageCnt, timePeriod
+                        "\n}", messageCnt, timePeriod
         );
 
         // todo timeperiod...

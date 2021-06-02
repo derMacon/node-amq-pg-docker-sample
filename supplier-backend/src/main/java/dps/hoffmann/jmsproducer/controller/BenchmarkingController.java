@@ -27,14 +27,10 @@ public class BenchmarkingController {
 
     @RequestMapping("/start")
     public String generateXmlMessage(
-            @RequestParam(defaultValue = "defaultPayment") String paymentName,
-            @RequestParam(defaultValue = "defaultSpecification") String specName,
             @RequestParam(defaultValue = "1") Integer msgCnt,
             @RequestParam(defaultValue = "0") Integer timePeriod
     ) {
         bulkMessengerService.benchmark(
-                paymentName,
-                specName,
                 msgCnt,
                 timePeriod
         );

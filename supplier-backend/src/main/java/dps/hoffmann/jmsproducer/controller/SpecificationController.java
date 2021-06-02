@@ -23,32 +23,32 @@ public class SpecificationController {
     private BulkService bulkMessengerService;
 
 
-    @RequestMapping("/refresh-sample-xsd")
-    public void refreshSampleXsd() {
-        log.info("refresh specification");
-        this.bulkMessengerService.refreshSpecs();
-    }
-
-    @PostMapping("/upload-xsd")
-    public void uploadSpecification(@RequestParam("file") MultipartFile inputFile) throws IOException,
-            JAXBException, InterruptedException {
-        log.info("upload file");
-        log.info(new String(inputFile.getBytes()));
-    }
-
-    @RequestMapping("/add")
-    public void addSpecs(
-            @RequestParam String specificationName,
-            @RequestParam String xsdContent,
-            @RequestParam String xPath
-    ) {
-        this.bulkMessengerService.addXsdSpecification(specificationName, xsdContent, xPath);
-    }
-
-    @RequestMapping("/list")
-    public List<SpecificationWrapper> getSpecs() {
-        log.info("return specs");
-        return this.bulkMessengerService.getSpecs();
-    }
+//    @RequestMapping("/refresh-sample-xsd")
+//    public void refreshSampleXsd() {
+//        log.info("refresh specification");
+//        this.bulkMessengerService.refreshSpecs();
+//    }
+//
+//    @PostMapping("/upload-xsd")
+//    public void uploadSpecification(@RequestParam("file") MultipartFile inputFile) throws IOException,
+//            JAXBException, InterruptedException {
+//        log.info("upload file");
+//        log.info(new String(inputFile.getBytes()));
+//    }
+//
+//    @RequestMapping("/add")
+//    public void addSpecs(
+//            @RequestParam String specificationName,
+//            @RequestParam String xsdContent,
+//            @RequestParam String xPath
+//    ) {
+//        this.bulkMessengerService.addXsdSpecification(specificationName, xsdContent, xPath);
+//    }
+//
+//    @RequestMapping("/list")
+//    public List<SpecificationWrapper> getSpecs() {
+//        log.info("return specs");
+//        return this.bulkMessengerService.getSpecs();
+//    }
 
 }
