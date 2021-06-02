@@ -6,10 +6,6 @@ export class PaymentMessage {
 
 	constructor(private initData: PaymentInput) {}
 
-	get specificationName(): string {
-		 return this.initData.specificationName; 
-	}
-
 	get content(): string {
 		 return this.initData.content;
 	};

@@ -60,14 +60,12 @@ export class PersistenceService {
 		INSERT INTO payment (
 			content, 
 			extracted_element, 
-			specification_name,
 			sent_timestamp, 
 			received_timestamp, 
 			processed_timestamp
 		) VALUES (
 			'${result.message}',
 			'${result.extractedElem}',
-			'${result.specificationName}',
 			'${this.transformDate(result.receivedTimestamp!)}',
 			'${this.transformDate(result.receivedTimestamp!)}',
 			'${this.transformDate(result.processedTimestamp!)}'

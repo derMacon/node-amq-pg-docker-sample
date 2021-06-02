@@ -15,8 +15,8 @@ export class WorkerService {
 	private xsdSpecification: Specification[] = [];
 
 	constructor(
-		private elemExtractor: ElementExtractor,
 		private xsdChecker: XsdChecker,
+		private elemExtractor: ElementExtractor,
 		private dbConnector: PersistenceService
 	) {}
 
@@ -31,23 +31,23 @@ export class WorkerService {
 
 		console.log("pay: ", msgBody);
 
-		let specification: Specification | undefined = this.findSpecification(payment.specificationName);
-		let xmlDoc = parseXmlString(payment.content);
+		// let specification: Specification | undefined = this.findSpecification(payment.specificationName);
+		// let xmlDoc = parseXmlString(payment.content);
 
-		if (specification != undefined 
-			&& xmlDoc.validate(parseXmlString(specification.xsdContent))
-		) {
-			console.log("xsd checks out start to work");
-			let val: string = this.extractValue(payment, specification);
-			console.log('extracted: ', val);
+		// if (specification != undefined 
+		// 	&& xmlDoc.validate(parseXmlString(specification.xsdContent))
+		// ) {
+		// 	console.log("xsd checks out start to work");
+		// 	let val: string = this.extractValue(payment, specification);
+		// 	console.log('extracted: ', val);
 
-			result.appendProcessedTimestamp(new Date())
-					.appendExtractedElem(val);
+		// 	result.appendProcessedTimestamp(new Date())
+		// 			.appendExtractedElem(val);
 
-			this.dbConnector.saveResult(result);
-		} else {
-			console.log("xsd does not check out");
-		}
+		// 	this.dbConnector.saveResult(result);
+		// } else {
+		// 	console.log("xsd does not check out");
+		// }
 	}
 
 	findSpecification(specName: string): Specification | undefined {

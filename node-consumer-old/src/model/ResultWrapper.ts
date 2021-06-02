@@ -7,7 +7,6 @@ export class ResultWrapper {
 
 	message: string | undefined;
 	extractedElem: string | undefined;
-	specificationName: string | undefined;
 	sentTimestamp: Date | undefined;
 	receivedTimestamp: Date | undefined;
 	processedTimestamp: Date | undefined;
@@ -15,7 +14,6 @@ export class ResultWrapper {
 	constructor(
 		payment: PaymentMessage
 	) {
-		this.specificationName = payment.specificationName;
 		this.message = payment.content;
 		this.sentTimestamp = payment.sentTimestamp;
 		this.receivedTimestamp = (new Date());
@@ -28,11 +26,6 @@ export class ResultWrapper {
 
 	appendExtractedElem(extractedElem: string): ResultWrapper {
 		this.extractedElem = extractedElem;
-		return this;
-	}
-	
-	appendSpecificationName(specificationName: string): ResultWrapper {
-		this.specificationName = specificationName;
 		return this;
 	}
 

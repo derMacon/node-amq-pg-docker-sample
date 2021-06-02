@@ -61,7 +61,7 @@ export class AmqService {
 					return;
 				}
 				
-				// that.workerService.work(body);
+				that.workerService.work(body);
 				console.log('received message: ' + body);
 				client.ack(message);
 				// client.disconnect();

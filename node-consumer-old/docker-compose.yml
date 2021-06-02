@@ -1,0 +1,63 @@
+version: '3'
+
+services:
+
+  activemq:
+    image: rmohr/activemq:5.14.0-alpine
+    container_name: activemq 
+    ports:
+      - "61616:61616"
+      - "61613:61613"
+      - "8161:8161"
+    restart: unless-stopped
+    
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@mail.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_LISTEN_PORT=5050
+    ports:
+      - "5050:5050"
+
+  script-db:
+    image: postgres:13-alpine
+    container_name: script-db
+    ports:
+      - "7003:7003"
+    command: -p 7003
+    environment:
+      - DEBUG=false
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=script-db
+    volumes:
+      - script-db:/var/lib/postgresql/data
+    restart: unless-stopped
+  
+  node-consumer:
+    build: .
+    container_name: node-consumer
+    restart: unless-stopped
+    environment: 
+      - AMQ_BROKER_HOSTNAME=${AMQ_BROKER_HOSTNAME}
+      - AMQ_BROKER_PORT=${AMQ_BROKER_PORT}
+      - AMQ_QUEUE_NAME=${AMQ_QUEUE_NAME}
+      - PG_HOSTNAME=${PG_HOSTNAME}
+      - PG_DATABASE_NAME=${PG_DATABASE_NAME}
+      - PG_DATABASE_PORT=${PG_DATABASE_PORT}
+      - PG_USER_NAME=${PG_USER_NAME}
+      - PG_USER_PASSWORD=${PG_USER_PASSWORD}
+  
+  jms-producer:
+    image: jms-producer 
+    container_name: jms-producer
+    ports:
+      - "8284:8284"
+    restart: unless-stopped
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
+volumes:
+  script-db:

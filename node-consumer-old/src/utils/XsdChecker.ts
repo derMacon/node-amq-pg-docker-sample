@@ -8,6 +8,16 @@
 
 export class XsdChecker {
 
+	// private xsdSpecification: string;
+
+	// constructor() {
+	// 	// this.xsdSpecification
+
+	// }
+
+
+
+
 // 	private xsdSpecification: Specification[] = [];
 
 	// addSpecification(xsdSpecification: Specification) {
