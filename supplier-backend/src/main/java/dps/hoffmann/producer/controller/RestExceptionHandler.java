@@ -1,4 +1,4 @@
-package dps.publicsector.controller;
+package dps.hoffmann.producer.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.core.Ordered;

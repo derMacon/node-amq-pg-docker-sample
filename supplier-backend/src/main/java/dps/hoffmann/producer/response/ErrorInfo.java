@@ -1,4 +1,4 @@
-package dps.publicsector.response;
+package dps.hoffmann.producer.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;

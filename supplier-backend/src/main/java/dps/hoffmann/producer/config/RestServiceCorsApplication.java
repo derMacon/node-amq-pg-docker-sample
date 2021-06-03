@@ -1,4 +1,4 @@
-package dps.publicsector.config;
+package dps.hoffmann.producer.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

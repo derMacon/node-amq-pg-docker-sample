@@ -1,4 +1,4 @@
-package dps.publicsector;
+package dps.hoffmann.producer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
