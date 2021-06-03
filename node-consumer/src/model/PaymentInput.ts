@@ -1,5 +1,5 @@
 export interface PaymentInput {
 	content: string;
-	specificationName: string;
+	xpath: string;
 	sentTimestamp: Date;
 }

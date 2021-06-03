@@ -6,13 +6,13 @@ export class PaymentMessage {
 
 	constructor(private initData: PaymentInput) {}
 
-	get specificationName(): string {
-		 return this.initData.specificationName; 
-	}
-
 	get content(): string {
 		 return this.initData.content;
 	};
+
+	get xpath(): string {
+		return this.initData.xpath;
+	}
 
 	get sentTimestamp(): Date {
 		return this.initData.sentTimestamp

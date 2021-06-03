@@ -2,7 +2,6 @@ package dps.hoffmann.producer.service;
 
 import dps.hoffmann.producer.model.BenchmarkRequest;
 import dps.hoffmann.producer.model.PaymentMessage;
-import dps.hoffmann.producer.properties.PaymentProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

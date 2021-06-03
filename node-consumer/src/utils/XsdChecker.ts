@@ -1,9 +1,10 @@
-import axios from "axios";
-import AxiosResponse from "axios";
-
+import { parseXmlString, Document } from "libxmljs2";
 // import { Document, parseXmlString } from 'libxmljs2';
 // import { Specification } from '../model/Specification';
 // import { PaymentMessage } from '../model/PaymentMessage';
+import fs from 'fs';
+import path from 'path';
+import { PaymentMessage } from '../model/PaymentMessage';
 
 // // const Stomp = require('stomp-client');
 // // require('colors');
@@ -11,19 +12,39 @@ import AxiosResponse from "axios";
 
 export class XsdChecker {
 
-	private xsdSpecification: string = "";
+	private xsdSpecification: string = '';
 
 	constructor() {
-		axios.get('http://localhost:8284/api/v1/spec/xsd')
-			.then(e => this.xsdSpecification = e.data)
+		fs.readFile(process.env.SPECS_RES_PATH!, (error: any, data: any) => {
+			if (error) {
+				throw error;
+			}
+			this.xsdSpecification = data.toString();
+		});
 	}
 
 
-	checkXml(xmlPaymentMessage: string): boolean {
-		console.log('xml check: ', this.xsdSpecification);
-		return true;
+	isValidXml(payment: PaymentMessage): boolean {
+		try {
+			var xmlDoc = parseXmlString(payment.content);
+		} catch (e) {
+			console.log("invalid input xml")
+			return false;
+		}
+
+		return xmlDoc.validate(parseXmlString(this.xsdSpecification));
 	}
 
+
+
+
+
+	// private xsdSpecification: string;
+
+	// constructor() {
+	// 	// this.xsdSpecification
+
+	// }
 
 
 
@@ -37,10 +58,10 @@ export class XsdChecker {
 
 
 
-// 	checkXml(payment: PaymentMessage): boolean {
+	// checkXml(payment: PaymentMessage): boolean {
 // 		let spec: Specification = this.findSpecification(payment.specificationName);
 
-// 		// todo throw exception when no spec found
+// 		// todo thro// w exception when no spec found
 
 // 		console.log("payment before: ", payment);
 

@@ -1,23 +1,31 @@
-import { Document, Node } from "libxmljs2";
 import { PaymentMessage } from "../model/PaymentMessage";
-import { ResultWrapper } from "../model/ResultWrapper";
-import { Specification } from "../model/Specification";
+
+const Dom = require('xmldom').DOMParser;
+const xpath = require('xpath');
 
 export class ElementExtractor {
 
-	// extract(messageWrapper: PaymentMessage): ResultWrapper {
+	public extract(payment: PaymentMessage): string {
+		console.log("payment inner: ", payment.xpath)
+		let path = this.translatePath(payment.xpath);
+		return this.extractElement(payment.content, path);
+	}
 
-	// 	// todo
-	// 	let extractedElem: string = "this is a test";
+	private translatePath(path: string): string {
+		let xPathElems: string[] = path.split('/');
+		let generatedPath: string = "";
 
-	// 	return new ResultWrapper(
-	// 		new Document(),
-	// 		new Node(),
-	// 		new Specification(),
-	// 		new Date(),
-	// 		new Date(),
-	// 		new Date()
-	// 	);
-	// }
+		// delete first element since xpath starts with leading slash
+		xPathElems.shift(); 
+
+		xPathElems.forEach(e => generatedPath += `/*[local-name(.)='${e}']`);
+		return generatedPath;
+	}
+
+	private extractElement(xmlContent: string, generatedPath: string) {
+		let doc = new Dom().parseFromString(xmlContent)
+		console.log(" -> out: ", xpath.select(generatedPath, doc));
+		return xpath.select(generatedPath, doc).textContent;
+	}
 
 }

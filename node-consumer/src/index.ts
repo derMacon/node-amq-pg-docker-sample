@@ -22,14 +22,16 @@ new AmqService(workerService).connectBroker();
 
 // class Test {
 // 	callapi() {
-// 		axios.get('http://localhost:8284/api/v1/spec/xsd').then(this.doSomething);
+// 		// axios.get('http://localhost:8284/api/v1/spec/xsd').then(this.doSomething);
 // 		// axios.get('http://localhost:8283/api/v1/specs', { crossdomain: true }).then(this.doSomething);
 // 		// fetch('http://localhost:8283/api/v1/specs')
 // 		// fetch('http://localhost:8284/api/v1/')
 // 		// fetch('http://localhost:8284/api/v1/specs')
-// 		// fetch('http://localhost:8284/api/v1/test')
-// 		// 	.then(this.transform)
-// 		// 	.then(this.mylog)
+// 		// fetch('http://localhost:8284/api/v1/spec/xsd')
+// 		fetch('http://localhost:8080/greeting-javaconfig')
+// 		// fetch('http://localhost:8080/greeting')
+// 			.then(this.transform)
+// 			.then(this.mylog)
 // 	}
 
 // 	transform(e: any) {
@@ -46,6 +48,12 @@ new AmqService(workerService).connectBroker();
 // }
 
 // new Test().callapi();
+
+
+
+
+
+
 
 // fetch('https://github.com/')
 //     .then(res:any => res.text())
