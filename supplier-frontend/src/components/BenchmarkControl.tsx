@@ -100,8 +100,8 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 
 	renderSelection(labelTxt: string, lst: string[], changeHandler: (e: React.FormEvent<HTMLSelectElement>) => void):React.ReactNode {
 		return <div className="mb-3">
-			<label htmlFor="xsdInput">XSD Input</label>
-			<select className="form-select" id="xsdInput" aria-label="Default select example" onChange={changeHandler}>
+			<label htmlFor={labelTxt}>{labelTxt}</label>
+			<select className="form-select" id={labelTxt} aria-label="Default select example" onChange={changeHandler}>
 				{lst.map(elem=> {
 					return <option key={elem}>{elem}</option>
 				})}
