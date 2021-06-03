@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>dps</groupId>
-    <artifactId>publicsector-producer</artifactId>
+    <artifactId>jms-producer</artifactId>
     <version>latest</version>
-    <name>publicsector-producer</name>
-    <description>dps public sector app - producer</description>
+    <name>jms-producer</name>
+    <description>hoffmann - BA - jms producer</description>
     <properties>
         <java.version>11</java.version>
         <!-- default value should stay empty -->
@@ -36,15 +36,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.2.18</version>
         </dependency>
         <dependency>
             <groupId>com.jcraft</groupId>

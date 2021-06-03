@@ -1,8 +1,0 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-# Datasource local storage ignored files
-/../../../../../../../../../../../../../../:\Users\silas\Documents\Studium\8.Semester\bsc_thesis\thesis\nodejs-projects\node-amq-pg-docker-sample\cors\gs-rest-service-cors\complete\.idea/dataSources/
-/dataSources.local.xml
-# Editor-based HTTP Client requests
-/httpRequests/
