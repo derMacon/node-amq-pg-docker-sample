@@ -1,6 +1,6 @@
 
 import { BenchmarkRequest } from '../model/BenchmarkRequest'
-import React, { ChangeEvent, Component } from 'react';
+import React from 'react';
 import axios from 'axios';
 
 import NumericInput from 'react-numeric-input';
