@@ -30,6 +30,8 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleXPathSelection = this.handleXPathSelection.bind(this);
 		this.handlePaymentSelection = this.handlePaymentSelection.bind(this);
+		this.handleTimespanInput = this.handleTimespanInput.bind(this);
+		this.handleQuantityInput = this.handleQuantityInput.bind(this);
 	}
 
 	componentDidMount() {
@@ -75,6 +77,24 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 	handlePaymentSelection(e: React.FormEvent<HTMLSelectElement>) {
 		e.preventDefault();
 		this.state.benchRequest.paymentOption = e.currentTarget.value;
+	}
+
+	handleQuantityInput(e: React.FormEvent<HTMLInputElement>) {
+		e.preventDefault();
+		let benchRequestCopy = Object.assign({}, this.state.benchRequest);
+		benchRequestCopy.messageCnt = +e.currentTarget.value;
+		this.setState({
+			benchRequest: benchRequestCopy
+		});
+	}
+
+	handleTimespanInput(e: React.FormEvent<HTMLInputElement>) {
+		e.preventDefault();
+		let benchRequestCopy = Object.assign({}, this.state.benchRequest);
+		benchRequestCopy.duration = +e.currentTarget.value;
+		this.setState({
+			benchRequest: benchRequestCopy
+		});
 	}
 
 	renderSelection(labelTxt: string, lst: string[], changeHandler: (e: React.FormEvent<HTMLSelectElement>) => void):React.ReactNode {
@@ -145,12 +165,12 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 
 						<div className="mb-3">
 							<label htmlFor="quantity">Quantity</label>
-							<input type="text" className="form-control" id="quantity" value="1" required/>
+							<input type="text" className="form-control" id="quantity" value={this.state.benchRequest.messageCnt} required onChange={this.handleQuantityInput}/>
 						</div>
 
 						<div className="mb-3">
 							<label htmlFor="timespan">Timespan</label>
-							<input type="text" className="form-control" id="timespan" value="0" required/>
+							<input type="text" className="form-control" id="timespan" value={this.state.benchRequest.duration} required onChange={this.handleTimespanInput}/>
 						</div>
 					</div>
 					{/* <input className="btn btn-primary" type="submit"/> */}
