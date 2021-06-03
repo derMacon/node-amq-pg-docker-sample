@@ -1,11 +1,9 @@
 
 import { BenchmarkRequest } from '../model/BenchmarkRequest'
-
 import React, { ChangeEvent, Component } from 'react';
 import axios from 'axios';
-import { timeStamp } from 'console';
 
-const fetch = require('node-fetch');
+import NumericInput from 'react-numeric-input';
 
 
 type BenchmarkControlProps = {};
@@ -32,6 +30,8 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 		this.handlePaymentSelection = this.handlePaymentSelection.bind(this);
 		this.handleTimespanInput = this.handleTimespanInput.bind(this);
 		this.handleQuantityInput = this.handleQuantityInput.bind(this);
+		this.renderDurationPane = this.renderDurationPane.bind(this);
+		this.renderQuantityPane = this.renderQuantityPane.bind(this);
 	}
 
 	componentDidMount() {
@@ -69,6 +69,9 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
            });
     };
 
+
+	// -------------- handler methods -------------- //
+
 	handleXPathSelection(e: React.FormEvent<HTMLSelectElement>) {
 		e.preventDefault();
 		this.state.benchRequest.pathOption = e.currentTarget.value;
@@ -79,19 +82,17 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 		this.state.benchRequest.paymentOption = e.currentTarget.value;
 	}
 
-	handleQuantityInput(e: React.FormEvent<HTMLInputElement>) {
-		e.preventDefault();
+	handleQuantityInput(value: number | null, stringValue: string, input: HTMLInputElement) {
 		let benchRequestCopy = Object.assign({}, this.state.benchRequest);
-		benchRequestCopy.messageCnt = +e.currentTarget.value;
+		benchRequestCopy.messageCnt = +value!;
 		this.setState({
 			benchRequest: benchRequestCopy
 		});
 	}
 
-	handleTimespanInput(e: React.FormEvent<HTMLInputElement>) {
-		e.preventDefault();
+	handleTimespanInput(value: number | null, stringValue: string, input: HTMLInputElement) {
 		let benchRequestCopy = Object.assign({}, this.state.benchRequest);
-		benchRequestCopy.duration = +e.currentTarget.value;
+		benchRequestCopy.duration = +value!;
 		this.setState({
 			benchRequest: benchRequestCopy
 		});
@@ -107,6 +108,22 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 			</select>
 		</div>
 	}
+
+	handleSubmit(event: any) {
+		event.preventDefault();
+		console.log("submit event: ", event)
+
+		let json: string = JSON.stringify(this.state.benchRequest!);
+		console.log("out json: ", json);
+		console.log("out obj: ", this.state.benchRequest);
+		axios.post('http://localhost:8284/api/v1/benchmark/start', this.state.benchRequest)
+		  .then(function (response) {
+			console.log(response);
+		  })
+	}
+
+
+	// -------------- render helper methods -------------- //
 
 	renderXPath() {
 		if (this.state.pathOptions.length > 0) {
@@ -124,37 +141,27 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 		return this.renderSelection('payment', this.state.paymentOptions, this.handlePaymentSelection);
 	}
 
-	transform(e: any) {
-		return e.text();
+	renderQuantityPane(): React.ReactNode {
+		return <div className="mb-3">
+			<label htmlFor="quantity">Quantity</label>
+			<NumericInput className="form-control" value={this.state.benchRequest.messageCnt} onChange={this.handleQuantityInput}/>
+		</div>
 	}
 
-	fetchAvailableSpecs(e: any) {
-		console.log(e)
-	}
-
-
-
-
-	handleSubmit(event: any) {
-		event.preventDefault();
-		console.log("submit event: ", event)
-
-		// fetch('http://localhost:8284/api/v1/get-specs')
-
-		let json: string = JSON.stringify(this.state.benchRequest!);
-		console.log("out json: ", json);
-		console.log("out obj: ", this.state.benchRequest);
-		axios.post('http://localhost:8284/api/v1/benchmark/start', this.state.benchRequest)
-		  .then(function (response) {
-			console.log(response);
-		  })
+	renderDurationPane(): React.ReactNode {
+		return <div className="mb-3">
+			<label htmlFor="timespan">Timespan</label>
+			<NumericInput className="form-control" value={this.state.benchRequest.duration} onChange={this.handleTimespanInput}/>
+		</div>
 	}
 
 	
     render() {
+
 		let xPathPane: React.ReactNode = this.renderXPath();
 		let paymentPane: React.ReactNode = this.renderPaymentPane();
-		console.log("hier")
+		let quantityPane: React.ReactNode = this.renderQuantityPane();
+		let durationPane: React.ReactNode = this.renderDurationPane();
 
         return (
 			<div className="p-5">
@@ -162,18 +169,9 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 					<div>
 						{xPathPane}
 						{paymentPane}
-
-						<div className="mb-3">
-							<label htmlFor="quantity">Quantity</label>
-							<input type="text" className="form-control" id="quantity" value={this.state.benchRequest.messageCnt} required onChange={this.handleQuantityInput}/>
-						</div>
-
-						<div className="mb-3">
-							<label htmlFor="timespan">Timespan</label>
-							<input type="text" className="form-control" id="timespan" value={this.state.benchRequest.duration} required onChange={this.handleTimespanInput}/>
-						</div>
+						{quantityPane}
+						{durationPane}
 					</div>
-					{/* <input className="btn btn-primary" type="submit"/> */}
 					<button className="btn btn-primary" type="submit">Start Batch</button>
 				</form>
             </div>
