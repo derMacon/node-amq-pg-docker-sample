@@ -13,7 +13,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 	
     render() {
         return (
-            <div className="">
+            <div>
 				<BenchmarkControl/>
             </div>
         );

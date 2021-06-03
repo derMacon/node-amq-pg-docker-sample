@@ -1,8 +1,9 @@
 
 import { BenchmarkRequest } from '../model/BenchmarkRequest'
 
-import React, { Component } from 'react';
+import React, { ChangeEvent, Component } from 'react';
 import axios from 'axios';
+import { timeStamp } from 'console';
 
 const fetch = require('node-fetch');
 
@@ -27,6 +28,8 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 		this.renderXPath = this.renderXPath.bind(this);
 		this.fetchPaymentOptions = this.fetchPaymentOptions.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleXPathSelection = this.handleXPathSelection.bind(this);
+		this.handlePaymentSelection = this.handlePaymentSelection.bind(this);
 	}
 
 	componentDidMount() {
@@ -38,11 +41,9 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
        axios.get("http://localhost:8284/api/v1/options/payment")
            .then(res => {
 				res.data.forEach((elem: string) => {
-					// console.log("before fetch: ", this.state)
 					this.setState( prevState => ({
 						paymentOptions: [...prevState.paymentOptions, elem]
 					}));
-					// console.log("after fetch: ", this.state)
 				})
 		   })
            .catch(err => {
@@ -66,13 +67,20 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
            });
     };
 
+	handleXPathSelection(e: React.FormEvent<HTMLSelectElement>) {
+		e.preventDefault();
+		this.state.benchRequest.pathOption = e.currentTarget.value;
+	}
 
+	handlePaymentSelection(e: React.FormEvent<HTMLSelectElement>) {
+		e.preventDefault();
+		this.state.benchRequest.paymentOption = e.currentTarget.value;
+	}
 
-
-	renderSelection(labelTxt: string, lst: string[]):React.ReactNode {
+	renderSelection(labelTxt: string, lst: string[], changeHandler: (e: React.FormEvent<HTMLSelectElement>) => void):React.ReactNode {
 		return <div className="mb-3">
 			<label htmlFor="xsdInput">XSD Input</label>
-			<select className="form-select" id="xsdInput" aria-label="Default select example">
+			<select className="form-select" id="xsdInput" aria-label="Default select example" onChange={changeHandler}>
 				{lst.map(elem=> {
 					return <option key={elem}>{elem}</option>
 				})}
@@ -85,7 +93,7 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 			let fstElem: string = this.state.pathOptions[0]
 			this.state.benchRequest.pathOption = fstElem;
 		}
-		return this.renderSelection('xpath', this.state.pathOptions);
+		return this.renderSelection('xpath', this.state.pathOptions, this.handleXPathSelection);
 	}
 
 	renderPaymentPane() {
@@ -93,7 +101,7 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 			let fstElem: string = this.state.paymentOptions[0]
 			this.state.benchRequest.paymentOption = fstElem;
 		}
-		return this.renderSelection('payment', this.state.paymentOptions);
+		return this.renderSelection('payment', this.state.paymentOptions, this.handlePaymentSelection);
 	}
 
 	transform(e: any) {
