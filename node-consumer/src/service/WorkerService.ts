@@ -22,8 +22,10 @@ export class WorkerService {
 		let payment: PaymentMessage = JSON.parse(msgBody);
 		let result: ResultWrapper = new ResultWrapper(payment);
 
+		console.log(`batch ${payment.batchId} - new payment`)
+
 		if (this.xsdChecker.isValidXml(payment)) {
-			console.log("xsd checks out start to work");
+			console.log(" -> xsd checker: valid xml");
 
 			let extractedElement: string = this.elemExtractor.extract(payment);
 
@@ -32,7 +34,7 @@ export class WorkerService {
 
 			this.dbConnector.saveResult(result);
 		} else {
-			console.log("xsd does not check out");
+			console.log(" -> xsd checker: invalid xml");
 		}
 	}
 

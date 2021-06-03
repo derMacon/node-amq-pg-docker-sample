@@ -49,6 +49,8 @@ services:
       - PG_DATABASE_PORT=${PG_DATABASE_PORT}
       - PG_USER_NAME=${PG_USER_NAME}
       - PG_USER_PASSWORD=${PG_USER_PASSWORD}
+    volumes:
+      - ./script-db:/var/lib/postgresql/data
   
   jms-producer:
     image: jms-producer 

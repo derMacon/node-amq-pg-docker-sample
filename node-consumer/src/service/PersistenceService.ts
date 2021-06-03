@@ -1,11 +1,16 @@
 import * as PgDriver from 'pg';
 import * as fs from 'fs';
-import * as Xml from 'libxmljs2';
 
 import { ResultWrapper } from '../model/ResultWrapper';
 import * as Xsd from '../model/Specification';
 
 export class PersistenceService {
+
+	private CONNECTED_LOG_MSG: string =
+'+--------------------------+\n\
+| connected to postgres db |\n\
++--------------------------+\n'
+
 
 	private dbClient: PgDriver.Pool;
 
@@ -25,7 +30,7 @@ export class PersistenceService {
 			if (err) {
 				console.error('connection error', err)
 			} else {
-				console.log('connected to postgres db')
+				console.log(this.CONNECTED_LOG_MSG);
 			}
 		});
 
@@ -76,7 +81,7 @@ export class PersistenceService {
 				console.error(err);
 				return;
 			}
-			console.log('Data insert successfull');
+			console.log(' -> data insert successfully');
 		});
 	}
 

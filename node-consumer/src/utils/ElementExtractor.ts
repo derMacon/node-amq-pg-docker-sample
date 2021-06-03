@@ -23,7 +23,7 @@ export class ElementExtractor {
 
 	private extractElement(xmlContent: string, generatedPath: string) {
 		let doc = new Dom().parseFromString(xmlContent)
-		console.log(" -> out: ", xpath.select(generatedPath, doc)[0].textContent);
+		console.log(" -> extracted elem: ", xpath.select(generatedPath, doc)[0].textContent);
 		return xpath.select(generatedPath, doc)[0].textContent;
 	}
 
