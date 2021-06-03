@@ -1,6 +1,6 @@
 package dps.hoffmann.producer.service;
 
-import dps.hoffmann.producer.properties.PaymentProperties;
+import dps.hoffmann.producer.properties.OldPaymentProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,15 +10,15 @@ import static dps.hoffmann.producer.utils.ResourceUtils.readResource;
 public class PaymentGenerator {
 
     @Autowired
-    private PaymentProperties paymentProperties;
+    private OldPaymentProperties oldPaymentProperties;
 
     public String nextRandom() {
         // todo modify
-        return readResource(getClass(), paymentProperties.getXmlres());
+        return readResource(getClass(), oldPaymentProperties.getXmlres());
     }
 
     public String nextSample() {
-        return readResource(getClass(), paymentProperties.getXmlres());
+        return readResource(getClass(), oldPaymentProperties.getXmlres());
     }
 
 }

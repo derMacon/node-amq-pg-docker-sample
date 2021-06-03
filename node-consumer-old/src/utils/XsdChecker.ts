@@ -1,12 +1,38 @@
 // import { Document, parseXmlString } from 'libxmljs2';
 // import { Specification } from '../model/Specification';
 // import { PaymentMessage } from '../model/PaymentMessage';
+import fs from 'fs';
+import path from 'path';
+import { PaymentMessage } from '../model/PaymentMessage';
 
 // // const Stomp = require('stomp-client');
 // // require('colors');
 // // const Diff = require('diff');
 
 export class XsdChecker {
+
+	private xsdSpecification: string = '';
+
+	constructor() {
+		fs.readFile(process.env.SPECS_RES_PATH!, (error: any, data: any) => {
+			if (error) {
+				throw error;
+			}
+			this.xsdSpecification = data.toString();
+		});
+	}
+
+
+	isValidXml(payment: PaymentMessage): boolean {
+
+		console.log("spec: ", this.xsdSpecification)
+
+		return true;
+	}
+
+
+
+
 
 	// private xsdSpecification: string;
 
@@ -27,10 +53,10 @@ export class XsdChecker {
 
 
 
-// 	checkXml(payment: PaymentMessage): boolean {
+	// checkXml(payment: PaymentMessage): boolean {
 // 		let spec: Specification = this.findSpecification(payment.specificationName);
 
-// 		// todo throw exception when no spec found
+// 		// todo thro// w exception when no spec found
 
 // 		console.log("payment before: ", payment);
 

@@ -10,6 +10,10 @@ export class PaymentMessage {
 		 return this.initData.content;
 	};
 
+	get xPath(): string {
+		return this.initData.xPath;
+	}
+
 	get sentTimestamp(): Date {
 		return this.initData.sentTimestamp
 	}
