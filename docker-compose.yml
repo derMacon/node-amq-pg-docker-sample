@@ -35,6 +35,21 @@ services:
     volumes:
       - script-db:/var/lib/postgresql/data
     restart: unless-stopped
+
+  history-db:
+    image: postgres:13-alpine
+    container_name: history-db
+    ports:
+      - "7004:7004"
+    command: -p 7004
+    environment:
+      - DEBUG=false
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=payment-history
+    volumes:
+      - history-db:/var/lib/postgresql/data
+    restart: unless-stopped
     
   jms-producer:
     image: jms-producer
@@ -47,3 +62,4 @@ services:
 
 volumes:
   script-db:
+  history-db:

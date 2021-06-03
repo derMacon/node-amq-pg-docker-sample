@@ -5,6 +5,7 @@ import { PaymentMessage } from './PaymentMessage';
 
 export class ResultWrapper {
 
+	batchId: number | undefined;
 	message: string | undefined;
 	extractedElem: string | undefined;
 	sentTimestamp: Date | undefined;
@@ -14,6 +15,7 @@ export class ResultWrapper {
 	constructor(
 		payment: PaymentMessage
 	) {
+		this.batchId = payment.batchId;
 		this.message = payment.content;
 		this.sentTimestamp = payment.sentTimestamp;
 		this.receivedTimestamp = (new Date());

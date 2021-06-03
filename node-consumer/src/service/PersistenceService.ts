@@ -44,7 +44,7 @@ export class PersistenceService {
 					console.error(err);
 					return;
 				}
-				console.log('schema execution successfull', res);
+				// console.log('schema execution successfull', res);
 			});
 
 
@@ -54,7 +54,7 @@ export class PersistenceService {
 
 	saveResult(result: ResultWrapper): void {
 
-		console.log("persist obj: ", result);
+		// console.log("persist obj: ", result);
 
 		const query = `
 		INSERT INTO payment (
@@ -80,36 +80,8 @@ export class PersistenceService {
 		});
 	}
 
-	saveSpecification(specification: Xsd.Specification): void {
-		// todo - scheint irgendwie nicht zu gehen: error: index row requires 8472 bytes, maximum size is 8191
-		// bei kuerzerer xsd Spezifikation laeufts aber...
-
-		console.log("save: -------- ", specification.specificationName);
-
-		// const query: string = `
-		// INSERT INTO specification (
-		// 	specification_name, 
-		// 	specification_xsd
-		// ) VALUES (
-		// 	'${specification.specificationName}',
-		// 	'${specification.xsdContent}'
-		// );`;
-
-		// console.log("save specs - query: ", query)
-
-		// this.dbClient.query(query, (err, res) => {
-		// 	if (err) {
-		// 		console.error(err);
-		// 		return;
-		// 	}
-		// 	console.log('schema execution successfull');
-		// });
-		
-	}
-
-
 	transformDate(inputDate: Date): string {
-		console.log('date: ', inputDate)
+		// console.log('date: ', inputDate)
 		// return inputDate.getMilliseconds();
 		// return inputDate.toLocaleDateString() + " " + inputDate.toLocaleTimeString() + ":" + inputDate.getMilliseconds();
 		return inputDate.toISOString();

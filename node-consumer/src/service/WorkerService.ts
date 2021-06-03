@@ -12,18 +12,11 @@ const Dom = require('xmldom').DOMParser;
 
 export class WorkerService {
 
-	private xsdSpecification: Specification[] = [];
-
 	constructor(
 		private xsdChecker: XsdChecker,
 		private elemExtractor: ElementExtractor,
 		private dbConnector: PersistenceService
 	) {}
-
-	updateSpecification(specification: Specification) {
-		this.xsdSpecification.push(specification);
-		this.dbConnector.saveSpecification(specification);
-	}
 
 	work(msgBody: string): void {
 		let payment: PaymentMessage = JSON.parse(msgBody);

@@ -6,7 +6,6 @@ const xpath = require('xpath');
 export class ElementExtractor {
 
 	public extract(payment: PaymentMessage): string {
-		console.log("payment inner: ", payment.xpath)
 		let path = this.translatePath(payment.xpath);
 		return this.extractElement(payment.content, path);
 	}
@@ -24,8 +23,8 @@ export class ElementExtractor {
 
 	private extractElement(xmlContent: string, generatedPath: string) {
 		let doc = new Dom().parseFromString(xmlContent)
-		console.log(" -> out: ", xpath.select(generatedPath, doc));
-		return xpath.select(generatedPath, doc).textContent;
+		console.log(" -> out: ", xpath.select(generatedPath, doc)[0].textContent);
+		return xpath.select(generatedPath, doc)[0].textContent;
 	}
 
 }

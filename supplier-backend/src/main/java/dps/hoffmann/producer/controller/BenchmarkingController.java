@@ -4,7 +4,7 @@ package dps.hoffmann.producer.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dps.hoffmann.producer.model.BenchmarkRequest;
-import dps.hoffmann.producer.service.BulkService;
+import dps.hoffmann.producer.service.BurstService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -22,7 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class BenchmarkingController {
 
     @Autowired
-    private BulkService bulkMessengerService;
+    private BurstService bulkMessengerService;
 
     @Autowired
     private ObjectMapper mapper;

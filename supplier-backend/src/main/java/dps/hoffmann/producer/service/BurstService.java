@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 @Service
 @Slf4j
-public class BulkService {
+public class BurstService {
 
     @Autowired
     private AmqService amqService;
@@ -23,6 +23,9 @@ public class BulkService {
 
     @Autowired
     private XPathGenerator xPathGenerator;
+
+    @Autowired
+    private PersistenceService persistenceService;
 
     @Transactional
     public void benchmark(BenchmarkRequest benchmarkRequest) throws InterruptedException {
@@ -45,13 +48,15 @@ public class BulkService {
 
         for (int i = 0; i < benchmarkRequest.getMessageCnt(); i++) {
 
-            PaymentMessage msg = PaymentMessage.builder()
+            PaymentMessage payment = PaymentMessage.builder()
                     .content(paymentSupplier.get())
                     .xPath(xPathSupplier.get())
                     .sentTimestamp(new Timestamp(System.currentTimeMillis()))
                     .build();
 
-            amqConsumer.accept(msg);
+            // update payment id by saving it to db
+            payment = persistenceService.save(payment);
+            amqConsumer.accept(payment);
 
             Thread.sleep(durationMillis);
         }
