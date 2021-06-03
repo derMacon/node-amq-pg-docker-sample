@@ -3,6 +3,7 @@ package dps.hoffmann.producer.config;
 import dps.hoffmann.producer.properties.ActivemqProperties;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -43,7 +44,19 @@ public class ActiveMqConfiguration {
                 senderActiveMQConnectionFactory());
     }
 
-
+    /**
+     * Provides the jms template instance
+     * IMPORTANT: to make the whole main producer method transactional,
+     * the option from the template must be set to session transacted
+     * @return jms template instance
+     */
+    @Bean(name="transactedTemplate")
+    public JmsTemplate transactedJmsTemplate() {
+        JmsTemplate jmsTemplate = new JmsTemplate();
+        jmsTemplate.setConnectionFactory(cachingConnectionFactory());
+        jmsTemplate.setSessionTransacted(true);
+        return jmsTemplate;
+    }
 
     /**
      * Provides the jms template instance
@@ -51,19 +64,12 @@ public class ActiveMqConfiguration {
      * the option from the template must be set to session transacted
      * @return jms template instance
      */
-    @Bean
-    public JmsTemplate queueTemplate() {
+    @Bean(name="nonTransactedTemplate")
+    public JmsTemplate nonTransactedJmsTemplate() {
         JmsTemplate jmsTemplate = new JmsTemplate();
         jmsTemplate.setConnectionFactory(cachingConnectionFactory());
-//        jmsTemplate.setSessionAcknowledgeModeName("CLIENT_ACKNOWLEDGE");
-//        jmsTemplate.setSessionTransacted(true);
-//        jmsTemplate.setSessionAcknowledgeModeName("client");
         return jmsTemplate;
     }
-
-
-
-
 
 
 //    @Bean

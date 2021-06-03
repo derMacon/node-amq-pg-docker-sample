@@ -28,5 +28,11 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(error, error.getStatus());
     }
 
+    @ExceptionHandler(InterruptedException.class)
+    protected ResponseEntity<Object> handleSleepInterrupt(InterruptedException ex) {
+        ApiError error = new ApiError(HttpStatus.BAD_REQUEST, ex);
+        return new ResponseEntity<>(error, error.getStatus());
+    }
+
 }
 

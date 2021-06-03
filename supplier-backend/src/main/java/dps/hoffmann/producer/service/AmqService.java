@@ -14,17 +14,19 @@ import org.springframework.stereotype.Service;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+import java.util.function.Consumer;
 
 @Service
 @Slf4j
 public class AmqService {
 
     @Autowired
-    JmsTemplate jmsQueueTemplate;
+    @Qualifier("transactedTemplate")
+    JmsTemplate transactedJmsTemplate;
 
-//    @Autowired
-//    @Qualifier("topicTemplate")
-//    JmsTemplate jmsTopicTemplate;
+    @Autowired
+    @Qualifier("nonTransactedTemplate")
+    JmsTemplate nonTransactedJmsTemplate;
 
     @Autowired
     private ActivemqProperties activemqProperties;
@@ -32,7 +34,17 @@ public class AmqService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public void sendObjPaymentQueueMessage(PaymentMessage wrapper) {
+
+    public Consumer<PaymentMessage> getConsumer(boolean sessionIsTransacted) {
+        return sessionIsTransacted
+                ? (message -> sendObjPaymentQueueMessage(transactedJmsTemplate, message))
+                : (message -> sendObjPaymentQueueMessage(nonTransactedJmsTemplate, message));
+    }
+
+    private void sendObjPaymentQueueMessage(
+            JmsTemplate jmsTemplate,
+            PaymentMessage wrapper
+    ) {
         String convertedJson = "";
         try {
             convertedJson = objectMapper.writeValueAsString(wrapper);
@@ -40,18 +52,16 @@ public class AmqService {
             e.printStackTrace();
         }
         log.info("converted to json: {}", convertedJson);
-        sendTxtPaymentQueueMessage(convertedJson);
-    }
 
-    public void sendTxtPaymentQueueMessage(String message) {
-        log.info("new txt message: {}", message);
-        jmsQueueTemplate.send(activemqProperties.getQueue(), new MessageCreator() {
+        final String message = convertedJson;
+        jmsTemplate.send(activemqProperties.getQueue(), new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
                 return session.createTextMessage(message);
             }
         });
     }
+
 
 //    public void sendXsdFormatTopic(SpecificationWrapper wrapper) {
 //        log.info("xsd format: ", wrapper);
