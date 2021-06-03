@@ -1,3 +1,4 @@
+import { parseXmlString, Document } from "libxmljs2";
 // import { Document, parseXmlString } from 'libxmljs2';
 // import { Specification } from '../model/Specification';
 // import { PaymentMessage } from '../model/PaymentMessage';
@@ -24,10 +25,14 @@ export class XsdChecker {
 
 
 	isValidXml(payment: PaymentMessage): boolean {
+		try {
+			var xmlDoc = parseXmlString(payment.content);
+		} catch (e) {
+			console.log("invalid input xml")
+			return false;
+		}
 
-		console.log("spec: ", this.xsdSpecification)
-
-		return true;
+		return xmlDoc.validate(parseXmlString(this.xsdSpecification));
 	}
 
 

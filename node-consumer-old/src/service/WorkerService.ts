@@ -29,15 +29,14 @@ export class WorkerService {
 		let payment: PaymentMessage = JSON.parse(msgBody);
 		let result: ResultWrapper = new ResultWrapper(payment);
 
-		console.log("pay: ", msgBody);
 		if (this.xsdChecker.isValidXml(payment)) {
 			console.log("xsd checks out start to work");
-			// let val: string = this.elemExtractor.extractValue(payment);
-			let val: string = 'test';
-			console.log('extracted: ', val);
+
+			let extractedElement: string = this.elemExtractor.extract(payment);
+			console.log("-------extracted elem: ", extractedElement)
 
 			result.appendProcessedTimestamp(new Date())
-					.appendExtractedElem(val);
+					.appendExtractedElem(extractedElement);
 
 			this.dbConnector.saveResult(result);
 		} else {
