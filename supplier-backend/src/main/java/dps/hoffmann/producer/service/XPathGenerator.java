@@ -1,11 +1,10 @@
 package dps.hoffmann.producer.service;
 
-import dps.hoffmann.producer.model.BenchmarkRequest;
+import dps.hoffmann.producer.model.BatchInstruction;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -27,7 +26,7 @@ public class XPathGenerator {
         return out;
     }
 
-    public Supplier<String> getXPathSupplier(BenchmarkRequest request) {
+    public Supplier<String> getXPathSupplier(BatchInstruction request) {
 
         if (request.getPathOption().equals(RANDOMIZED_KEY_IDENTIFIER)) {
 

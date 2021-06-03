@@ -2,14 +2,18 @@ import * as PgDriver from 'pg';
 import * as fs from 'fs';
 
 import { ResultWrapper } from '../model/ResultWrapper';
-import * as Xsd from '../model/Specification';
 
 export class PersistenceService {
 
-	private CONNECTED_LOG_MSG: string =
+	private readonly CONNECTED_LOG_MSG: string =
 '+--------------------------+\n\
 | connected to postgres db |\n\
 +--------------------------+\n'
+
+	private readonly ERROR_LOG_MSG: string =
+'+-------------------------+\n\
+| could not connect to db |\n\
++-------------------------+\n'
 
 
 	private dbClient: PgDriver.Pool;
@@ -28,7 +32,7 @@ export class PersistenceService {
 
 		this.dbClient.connect(err => {
 			if (err) {
-				console.error('connection error', err)
+				console.log(this.ERROR_LOG_MSG);
 			} else {
 				console.log(this.CONNECTED_LOG_MSG);
 			}

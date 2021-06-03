@@ -1,7 +1,7 @@
 package dps.hoffmann.producer.service;
 
-import dps.hoffmann.producer.model.PaymentMessage;
-import dps.hoffmann.producer.repository.PaymentMessageRespository;
+import dps.hoffmann.producer.model.BatchInstruction;
+import dps.hoffmann.producer.repository.BatchInstructionRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 public class PersistenceService {
 
     @Autowired
-    private PaymentMessageRespository paymentMessageRespository;
+    private BatchInstructionRespository batchInstructionRespository;
 
 
-    public PaymentMessage save(PaymentMessage payment) {
-        return this.paymentMessageRespository.save(payment);
+    public BatchInstruction save(BatchInstruction userRequest) {
+        return this.batchInstructionRespository.save(userRequest);
     }
 
 

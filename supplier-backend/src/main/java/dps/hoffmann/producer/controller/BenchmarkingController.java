@@ -3,7 +3,7 @@ package dps.hoffmann.producer.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dps.hoffmann.producer.model.BenchmarkRequest;
+import dps.hoffmann.producer.model.BatchInstruction;
 import dps.hoffmann.producer.service.BurstService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class BenchmarkingController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
     public void startBenchmark(@RequestBody String jsonBody) throws JsonProcessingException, InterruptedException {
-        BenchmarkRequest req = mapper.readValue(jsonBody, BenchmarkRequest.class);
+        BatchInstruction req = mapper.readValue(jsonBody, BatchInstruction.class);
         bulkMessengerService.benchmark(req);
     }
 

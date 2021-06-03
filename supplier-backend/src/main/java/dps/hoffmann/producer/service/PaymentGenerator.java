@@ -1,6 +1,6 @@
 package dps.hoffmann.producer.service;
 
-import dps.hoffmann.producer.model.BenchmarkRequest;
+import dps.hoffmann.producer.model.BatchInstruction;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class PaymentGenerator {
         });
     }
 
-    public Supplier<String> getPaymentSupplier(BenchmarkRequest request) {
+    public Supplier<String> getPaymentSupplier(BatchInstruction request) {
 
         if (request.getPaymentOption().equalsIgnoreCase(RANDOMIZE_REQUEST_INSTRUCTION)) {
             // todo make random
