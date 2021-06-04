@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>dps</groupId>
-    <artifactId>publicsector-producer</artifactId>
+    <artifactId>supplier-backend</artifactId>
     <version>latest</version>
-    <name>publicsector-producer</name>
-    <description>dps public sector app - producer</description>
+    <name>supplier-backend</name>
+    <description>dps payment message - producer</description>
     <properties>
         <java.version>11</java.version>
         <!-- default value should stay empty -->
@@ -85,8 +85,15 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>publicsector-producer</finalName>
+        <finalName>supplier-backend</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -97,13 +104,6 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
             <plugin>
@@ -119,7 +119,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>${nexus.host}publicsector-producer</repository>
+                    <repository>${nexus.host}supplier-backend</repository>
                     <tag>${project.version}</tag>
                 </configuration>
                 <dependencies>

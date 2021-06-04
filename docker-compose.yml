@@ -51,14 +51,34 @@ services:
       - history-db:/var/lib/postgresql/data
     restart: unless-stopped
     
-  jms-producer:
-    image: jms-producer
-    container_name: jms-producer
+  supplier-backend:
+    image: supplier-backend
+    container_name: supplier-backend
     ports:
       - "8284:8284"
     restart: unless-stopped
     environment:
+      - DATABASE_HOST=history-db
+      - DATABASE_USER=admin
+      - DATABASE_PASSWORD=admin
+      - DATABASE_NAME=payment-history
+      - DATABASE_PORT=7004
       - "SPRING_PROFILES_ACTIVE=prod"
+
+  node-consumer:
+    build: node-consumer
+    container_name: node-consumer
+    restart: unless-stopped
+    environment: 
+      - TEST_ENV=testvalouter
+      - AMQ_BROKER_HOSTNAME=${AMQ_BROKER_HOSTNAME}
+      - AMQ_BROKER_PORT=${AMQ_BROKER_PORT}
+      - AMQ_QUEUE_NAME=${AMQ_QUEUE_NAME}
+      - PG_HOSTNAME=${PG_HOSTNAME}
+      - PG_DATABASE_NAME=${PG_DATABASE_NAME}
+      - PG_DATABASE_PORT=${PG_DATABASE_PORT}
+      - PG_USER_NAME=${PG_USER_NAME}
+      - PG_USER_PASSWORD=${PG_USER_PASSWORD}
 
 volumes:
   script-db:

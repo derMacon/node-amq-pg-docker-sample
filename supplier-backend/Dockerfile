@@ -2,7 +2,7 @@
 FROM openjdk:11-jre-slim-buster
 
 #default command
-CMD java -jar /data/publicsector-producer.jar
+CMD java -jar /data/supplier-backend.jar
 
 #copy jar to docker image
-ADD ./target/publicsector-producer.jar /data/publicsector-producer.jar
+ADD ./target/supplier-backend.jar /data/supplier-backend.jar
