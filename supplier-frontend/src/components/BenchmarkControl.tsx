@@ -14,10 +14,10 @@ type BenchmarkControlState = {
 
 class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkControlState> {
 
-	private hostname: string = process.env.API_HOSTNAME!;
-	private port: string = process.env.API_PORT!;
-	private payment_endpoint: string = process.env.API_ENDPOINT_FETCH_PAYMENT!;
-	private path_endpoint: string = process.env.API_ENDPOINT_FETCH_PAYMENT!;
+	private hostname: string = process.env.REACT_APP_API_HOSTNAME!;
+	private port: string = process.env.REACT_APP_API_PORT!;
+	private payment_endpoint: string = process.env.REACT_APP_API_ENDPOINT_FETCH_PAYMENT!;
+	private path_endpoint: string = process.env.REACT_APP_API_ENDPOINT_FETCH_PATH!;
 
 
 	constructor(props: BenchmarkControlProps) {
@@ -45,7 +45,6 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
     }
 
     fetchPaymentOptions() {
-    //    axios.get("http://localhost:8284/api/v1/options/payment")
        axios.get('http://' + this.hostname + ":" + this.port + this.payment_endpoint)
            .then(res => {
 				res.data.forEach((elem: string) => {
@@ -61,7 +60,6 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
     };
 
     fetchPathOptions() {
-    //    axios.get("http://localhost:8284/api/v1/options/path")
        axios.get('http://' + this.hostname + ":" + this.port + this.path_endpoint)
            .then(res => {
 				res.data.forEach((elem: string) => {
