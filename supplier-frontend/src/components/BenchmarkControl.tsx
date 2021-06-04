@@ -1,4 +1,3 @@
-
 import { BenchmarkRequest } from '../model/BenchmarkRequest'
 import React from 'react';
 import axios from 'axios';
@@ -14,6 +13,12 @@ type BenchmarkControlState = {
 };
 
 class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkControlState> {
+
+	private hostname: string = process.env.API_HOSTNAME!;
+	private port: string = process.env.API_PORT!;
+	private payment_endpoint: string = process.env.API_ENDPOINT_FETCH_PAYMENT!;
+	private path_endpoint: string = process.env.API_ENDPOINT_FETCH_PAYMENT!;
+
 
 	constructor(props: BenchmarkControlProps) {
         super(props);
@@ -40,7 +45,8 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
     }
 
     fetchPaymentOptions() {
-       axios.get("http://localhost:8284/api/v1/options/payment")
+    //    axios.get("http://localhost:8284/api/v1/options/payment")
+       axios.get('http://' + this.hostname + ":" + this.port + this.payment_endpoint)
            .then(res => {
 				res.data.forEach((elem: string) => {
 					this.setState( prevState => ({
@@ -55,7 +61,8 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
     };
 
     fetchPathOptions() {
-       axios.get("http://localhost:8284/api/v1/options/path")
+    //    axios.get("http://localhost:8284/api/v1/options/path")
+       axios.get('http://' + this.hostname + ":" + this.port + this.path_endpoint)
            .then(res => {
 				res.data.forEach((elem: string) => {
 					this.setState( prevState => ({
