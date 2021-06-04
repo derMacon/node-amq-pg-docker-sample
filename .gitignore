@@ -252,3 +252,5 @@ test-files/
 */installer_export/
 
 */.idea/
+*/*.tar
+
