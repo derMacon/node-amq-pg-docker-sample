@@ -51,10 +51,12 @@ public class AmqService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        log.info("converted to json: {}", convertedJson);
+
 
         final String message = convertedJson;
-        jmsTemplate.send(activemqProperties.getQueue(), new MessageCreator() {
+        String destination = activemqProperties.getQueue();
+        log.info("dest: {}", destination);
+        jmsTemplate.send(destination, new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
                 return session.createTextMessage(message);

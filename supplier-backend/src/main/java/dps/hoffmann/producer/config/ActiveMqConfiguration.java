@@ -1,9 +1,9 @@
 package dps.hoffmann.producer.config;
 
 import dps.hoffmann.producer.properties.ActivemqProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -18,16 +18,28 @@ import java.util.Arrays;
 @Configuration
 @EnableJms
 @EnableTransactionManagement
+@Slf4j
 public class ActiveMqConfiguration {
 
     @Autowired
     private ActivemqProperties activemqProperties;
 
+//    @Bean
+//    public ActiveMQConnectionFactory connectionFactory(){
+//        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
+//        connectionFactory.setBrokerURL(activemqProperties.getUrl());
+////        connectionFactory.setUserName(BROKER_USERNAME);
+////        connectionFactory.setPassword(BROKER_PASSWORD);
+//        return connectionFactory;
+//    }
+
+
     @Bean
     public ConnectionFactory senderActiveMQConnectionFactory() {
         ActiveMQConnectionFactory activeMQConnectionFactory =
                 new ActiveMQConnectionFactory();
-        activeMQConnectionFactory.setBrokerURL(activeMQConnectionFactory.getBrokerURL());
+        activeMQConnectionFactory.setBrokerURL(activemqProperties.getUrl());
+//        activeMQConnectionFactory.setBrokerURL(activeMQConnectionFactory.getBrokerURL());
         activeMQConnectionFactory.setTrustedPackages(Arrays.asList(
                 "dps.hoffmann",
                 "java.time",

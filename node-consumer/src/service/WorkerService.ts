@@ -1,14 +1,9 @@
 // import { Payment } from "../model/PaymentMessage";
 import { ResultWrapper } from "../model/ResultWrapper";
-import { Specification } from "../model/Specification";
-import { ElementExtractor } from "./ElementExtractor";
+import { ElementExtractor } from "../utils/ElementExtractor";
 import { XsdChecker } from "../utils/XsdChecker";
 import { PersistenceService } from './PersistenceService';
 import { PaymentMessage } from '../model/PaymentMessage';
-import { parseXmlString, Document } from "libxmljs2";
-
-const xpath = require('xpath');
-const Dom = require('xmldom').DOMParser;
 
 export class WorkerService {
 

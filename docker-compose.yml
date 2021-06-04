@@ -6,32 +6,32 @@ services:
     image: rmohr/activemq:5.14.0-alpine
     container_name: activemq 
     ports:
-      - "61616:61616"
-      - "61613:61613"
-      - "8161:8161"
+      - "${AMQ_TCP_PORT}:61616"
+      - "${AMQ_STOMP_PORT}:61613"
+      - "${AMQ_WEB_PORT}:8161"
     restart: unless-stopped
     
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@mail.com
-      - PGADMIN_DEFAULT_PASSWORD=admin
-      - PGADMIN_LISTEN_PORT=5050
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+      - PGADMIN_LISTEN_PORT=${PGADMIN_LISTEN_PORT}
     ports:
-      - "5050:5050"
+      - "${PGADMIN_LISTEN_PORT}:5050"
 
   script-db:
     image: postgres:13-alpine
     container_name: script-db
     ports:
-      - "7003:7003"
-    command: -p 7003
+      - "${SCRIPT_DATABASE_PORT}:${SCRIPT_DATABASE_PORT}"
+    command: -p ${SCRIPT_DATABASE_PORT}
     environment:
       - DEBUG=false
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=script-db
+      - POSTGRES_USER=${SCRIPT_USER_NAME}
+      - POSTGRES_PASSWORD=${SCRIPT_USER_PASSWORD}
+      - POSTGRES_DB=${SCRIPT_DATABASE_NAME}
     volumes:
       - script-db:/var/lib/postgresql/data
     restart: unless-stopped
@@ -40,13 +40,13 @@ services:
     image: postgres:13-alpine
     container_name: history-db
     ports:
-      - "7004:7004"
-    command: -p 7004
+      - "${SUPPLIER_DATABASE_PORT}:${SUPPLIER_DATABASE_PORT}"
+    command: -p ${SUPPLIER_DATABASE_PORT}
     environment:
       - DEBUG=false
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=payment-history
+      - POSTGRES_USER=${SUPPLIER_USER_NAME}
+      - POSTGRES_PASSWORD=${SUPPLIER_USER_PASSWORD}
+      - POSTGRES_DB=${SUPPLIER_DATABASE_NAME}
     volumes:
       - history-db:/var/lib/postgresql/data
     restart: unless-stopped
@@ -55,14 +55,18 @@ services:
     image: supplier-backend
     container_name: supplier-backend
     ports:
-      - "8284:8284"
+      - "${SUPPLIER_BACKEND_PORT}:${SUPPLIER_BACKEND_PORT}"
     restart: unless-stopped
     environment:
       - DATABASE_HOST=history-db
-      - DATABASE_USER=admin
-      - DATABASE_PASSWORD=admin
-      - DATABASE_NAME=payment-history
-      - DATABASE_PORT=7004
+      - DATABASE_USER=${SCRIPT_USER_NAME}
+      - DATABASE_PASSWORD=${SCRIPT_USER_PASSWORD}
+      - DATABASE_NAME=${SUPPLIER_DATABASE_NAME}
+      - DATABASE_PORT=${SUPPLIER_DATABASE_PORT}
+      - AMQ_QUEUE_NAME=${AMQ_QUEUE_NAME}
+      - AMQ_BROKER_HOSTNAME=activemq
+      - AMQ_BROKER_PORT=${AMQ_TCP_PORT}
+      - SERVER_PORT=${SUPPLIER_BACKEND_PORT}
       - "SPRING_PROFILES_ACTIVE=prod"
 
   node-consumer:
@@ -70,15 +74,14 @@ services:
     container_name: node-consumer
     restart: unless-stopped
     environment: 
-      - TEST_ENV=testvalouter
-      - AMQ_BROKER_HOSTNAME=${AMQ_BROKER_HOSTNAME}
-      - AMQ_BROKER_PORT=${AMQ_BROKER_PORT}
+      - PG_HOSTNAME=script-db
+      - AMQ_BROKER_HOSTNAME=activemq
+      - PG_DATABASE_NAME=${SCRIPT_DATABASE_NAME}
+      - PG_DATABASE_PORT=${SCRIPT_DATABASE_PORT}
+      - PG_USER_NAME=${SCRIPT_USER_NAME}
+      - PG_USER_PASSWORD=${SCRIPT_USER_PASSWORD}
+      - AMQ_BROKER_PORT=${AMQ_STOMP_PORT}
       - AMQ_QUEUE_NAME=${AMQ_QUEUE_NAME}
-      - PG_HOSTNAME=${PG_HOSTNAME}
-      - PG_DATABASE_NAME=${PG_DATABASE_NAME}
-      - PG_DATABASE_PORT=${PG_DATABASE_PORT}
-      - PG_USER_NAME=${PG_USER_NAME}
-      - PG_USER_PASSWORD=${PG_USER_PASSWORD}
 
 volumes:
   script-db:

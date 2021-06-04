@@ -8,9 +8,8 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(ignoreUnknownFields = false, prefix = "broker.activemq")
+@ConfigurationProperties(ignoreUnknownFields = false, prefix = "amq.broker")
 public class ActivemqProperties {
     private String url;
     private String queue;
-    private String topic;
 }
