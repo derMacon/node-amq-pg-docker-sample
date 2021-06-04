@@ -18,6 +18,7 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 	private port: string = process.env.REACT_APP_API_PORT!;
 	private payment_endpoint: string = process.env.REACT_APP_API_ENDPOINT_FETCH_PAYMENT!;
 	private path_endpoint: string = process.env.REACT_APP_API_ENDPOINT_FETCH_PATH!;
+	private submit_endpoint: string = process.env.REACT_APP_API_ENDPOINT_SUBMIT!;
 
 
 	constructor(props: BenchmarkControlProps) {
@@ -121,7 +122,7 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 		let json: string = JSON.stringify(this.state.benchRequest!);
 		console.log("out json: ", json);
 		console.log("out obj: ", this.state.benchRequest);
-		axios.post('http://localhost:8284/api/v1/benchmark/start', this.state.benchRequest)
+		axios.post('http://' + this.hostname + ":" + this.port + this.submit_endpoint, this.state.benchRequest)
 		  .then(function (response) {
 			console.log(response);
 		  })
