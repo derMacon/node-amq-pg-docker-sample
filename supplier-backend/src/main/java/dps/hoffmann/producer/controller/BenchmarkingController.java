@@ -33,6 +33,7 @@ public class BenchmarkingController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
     public void startBenchmark(@RequestBody String jsonBody) throws JsonProcessingException, InterruptedException {
+        log.info("new benchmark request: {}", jsonBody);
         BatchInstruction req = mapper.readValue(jsonBody, BatchInstruction.class);
         bulkMessengerService.benchmark(req);
     }

@@ -119,10 +119,10 @@ class BenchmarkControl extends React.Component<BenchmarkControlProps, BenchmarkC
 		event.preventDefault();
 		console.log("submit event: ", event)
 
-		let json: string = JSON.stringify(this.state.benchRequest!);
-		console.log("out json: ", json);
 		console.log("out obj: ", this.state.benchRequest);
-		axios.post('http://' + this.hostname + ":" + this.port + this.submit_endpoint, this.state.benchRequest)
+		let url: string = 'http://' + this.hostname + ":" + this.port + this.submit_endpoint;
+		console.log('submit to url: ', url);
+		axios.post(url, this.state.benchRequest)
 		  .then(function (response) {
 			console.log(response);
 		  })

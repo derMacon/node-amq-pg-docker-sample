@@ -24,16 +24,6 @@ public class ActiveMqConfiguration {
     @Autowired
     private ActivemqProperties activemqProperties;
 
-//    @Bean
-//    public ActiveMQConnectionFactory connectionFactory(){
-//        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
-//        connectionFactory.setBrokerURL(activemqProperties.getUrl());
-////        connectionFactory.setUserName(BROKER_USERNAME);
-////        connectionFactory.setPassword(BROKER_PASSWORD);
-//        return connectionFactory;
-//    }
-
-
     @Bean
     public ConnectionFactory senderActiveMQConnectionFactory() {
         ActiveMQConnectionFactory activeMQConnectionFactory =
