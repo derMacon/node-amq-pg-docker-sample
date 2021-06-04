@@ -1,5 +1,3 @@
-import { Document, Node } from 'libxmljs2';
-import { Specification } from '../model/Specification';
 import { PaymentMessage } from './PaymentMessage';
 
 
