@@ -6,14 +6,15 @@ import { XsdChecker } from './utils/XsdChecker';
 
 require('dotenv').config();
 
-let workerService: WorkerService = new WorkerService(
-	new XsdChecker(),
-	new ElementExtractor(),
-	new PersistenceService()
-);
+// let workerService: WorkerService = new WorkerService(
+// 	new XsdChecker(),
+// 	new ElementExtractor(),
+// 	new PersistenceService()
+// );
+// 
+// new AmqService(workerService).connectBroker();
 
-new AmqService(workerService).connectBroker();
-
+console.log('test env: ', process.env.TEST_ENV);
  
 
 // const axios = require('axios');

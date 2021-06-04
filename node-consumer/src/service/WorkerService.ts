@@ -1,7 +1,7 @@
 // import { Payment } from "../model/PaymentMessage";
 import { ResultWrapper } from "../model/ResultWrapper";
 import { Specification } from "../model/Specification";
-import { ElementExtractor } from "../utils/ElementExtractor";
+import { ElementExtractor } from "./ElementExtractor";
 import { XsdChecker } from "../utils/XsdChecker";
 import { PersistenceService } from './PersistenceService';
 import { PaymentMessage } from '../model/PaymentMessage';
