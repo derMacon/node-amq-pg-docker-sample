@@ -70,7 +70,7 @@ services:
       - "SPRING_PROFILES_ACTIVE=prod"
 
   node-consumer:
-    build: node-consumer
+    image: node-consumer:try3
     container_name: node-consumer
     restart: unless-stopped
     environment: 
