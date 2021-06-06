@@ -30,7 +30,7 @@ public class BenchmarkingController {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @RequestMapping(value = "/start",
-            method = GET,
+            method = POST,
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
     public void startBenchmark(@RequestBody String jsonBody) throws JsonProcessingException, InterruptedException {
