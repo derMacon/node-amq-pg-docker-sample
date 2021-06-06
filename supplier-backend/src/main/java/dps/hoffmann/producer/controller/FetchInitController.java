@@ -20,6 +20,14 @@ public class FetchInitController {
     @Autowired
     private XPathGenerator xPathGenerator;
 
+
+    @RequestMapping("/")
+    public String health() {
+        String info = "this componennt is healthy";
+        log.info(info);
+        return info;
+    }
+
     @RequestMapping("/payment")
     public List<String> getPaymentOptions() {
         log.info("fetch payment instructions");

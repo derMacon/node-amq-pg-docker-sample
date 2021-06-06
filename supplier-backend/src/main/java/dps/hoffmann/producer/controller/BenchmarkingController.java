@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RequestMapping("/benchmark")
@@ -29,7 +30,7 @@ public class BenchmarkingController {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @RequestMapping(value = "/start",
-            method = POST,
+            method = GET,
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
     public void startBenchmark(@RequestBody String jsonBody) throws JsonProcessingException, InterruptedException {
