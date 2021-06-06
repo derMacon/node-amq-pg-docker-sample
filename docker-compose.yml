@@ -75,6 +75,7 @@ services:
   supplier-frontend:
     image: supplier-frontend:latest
     container_name: supplier-frontend
+    build: supplier-frontend/
     ports:
       - "${SUPPLIER_FRONTEND_PORT}:80"
     depends_on:
@@ -88,6 +89,7 @@ services:
   node-consumer:
     image: node-consumer:latest
     container_name: node-consumer
+    build: node-consumer/
     depends_on:
       - activemq
       - script-db
