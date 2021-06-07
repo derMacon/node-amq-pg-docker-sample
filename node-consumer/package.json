@@ -23,6 +23,7 @@
     "dotenv": "^10.0.0",
     "fs": "^0.0.1-security",
     "ini": "^2.0.0",
+    "libxmljs2": "^0.27.0",
     "pg": "^8.6.0",
     "stompit": "^1.0.0",
     "typescript": "^4.3.2",
