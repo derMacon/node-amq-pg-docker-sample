@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: queue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: queue
+  template:
+    metadata:
+      labels:
+        app: queue
+    spec:
+      containers:
+      - name: web
+        image: webcenter/activemq:5.14.3
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 61616
+          - containerPort: 8161
+        resources:
+          limits:
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: queue
+spec:
+  ports:
+  - name: messaging
+    port: 61616
+    targetPort: 61616
+  - name: ui
+    port: 8161
+    targetPort: 8161
+  selector:
+    app: queue
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: queue
+spec:
+  type: LoadBalancer
+  ports:
+  - name: ui
+    port: 8161
+    targetPort: 8161
+    nodePort: 30000
+  selector:
+    app: queue
