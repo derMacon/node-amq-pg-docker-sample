@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: supplier-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: supplier-backend
+  template:
+    metadata:
+      labels:
+        app: supplier-backend
+      annotations:
+        prometheus.io/scrape: 'true'
+    spec:
+      containers:
+      - name: supplier-backend
+        image: supplier-backend
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: DATABASE_HOST
+            value: "history-db"
+          - name: DATABASE_USER
+            value: "admin"
+          - name: DATABASE_PASSWORD
+            value: "admin"
+          - name: DATABASE_NAME
+            value: "payment-history"
+          - name: DATABASE_PORT
+            value: "7004"
+          - name: AMQ_QUEUE_NAME
+            value: "paymentqueue"
+          - name: AMQ_BROKER_HOSTNAME
+            value: "queue"
+          - name: AMQ_BROKER_PORT
+            value: "61616"
+          - name: SERVER_PORT
+            value: "8284"
+          - name: SPRING_PROFILES_ACTIVE
+            value: "prod"
+        ports:
+          - containerPort: 8161
+        resources:
+          limits:
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: supplier-backend
+spec:
+  ports:
+  - port: 8284
+    targetPort: 8284
+  selector:
+    app: queue

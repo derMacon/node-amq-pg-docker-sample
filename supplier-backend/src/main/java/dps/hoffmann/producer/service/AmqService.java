@@ -35,6 +35,26 @@ public class AmqService {
     private ObjectMapper objectMapper;
 
 
+    public boolean isUp() {
+        var connection = transactedJmsTemplate.getConnectionFactory();
+        try {
+            connection.createConnection().close();
+        } catch (JMSException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        connection = nonTransactedJmsTemplate.getConnectionFactory();
+        try {
+            connection.createConnection().close();
+        } catch (JMSException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
     public Consumer<PaymentMessage> getConsumer(boolean sessionIsTransacted) {
         return sessionIsTransacted
                 ? (message -> sendObjPaymentQueueMessage(transactedJmsTemplate, message))

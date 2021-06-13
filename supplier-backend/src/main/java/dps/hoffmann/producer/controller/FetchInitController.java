@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Controller used to instancieate the form fields in the frontend
+ */
 @RequestMapping("/options")
 @RestController
 @Slf4j
@@ -20,20 +23,26 @@ public class FetchInitController {
     @Autowired
     private XPathGenerator xPathGenerator;
 
-
-    @RequestMapping("/")
-    public String health() {
-        String info = "this componennt is healthy";
-        log.info(info);
-        return info;
+    @RequestMapping("/health")
+    public boolean health() {
+        log.info("this componennt is healthy");
+        return true;
     }
 
+    /**
+     * Displays the payment options
+     * @return payment options
+     */
     @RequestMapping("/payment")
     public List<String> getPaymentOptions() {
         log.info("fetch payment instructions");
         return paymentGenerator.getInstructionDisplayNames();
     }
 
+    /**
+     * Displays the path options
+     * @return path options
+     */
     @RequestMapping("/path")
     public List<String> getPathOptions() {
         log.info("fetch paths");

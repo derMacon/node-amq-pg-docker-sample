@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: history-db
+spec:
+  containers:
+  - name: history-db
+    image: postgres:13-alpine
+    imagePullPolicy: IfNotPresent
+    ports:
+      - containerPort: 5432
+    envFrom:
+      - configMapRef:
+          name: postgres-config
+    volumeMounts:
+      - mountPath: /var/lib/postgresql/data
+        name: postgredb
+  volumes:
+    - name: postgredb
+      persistentVolumeClaim:
+        claimName: postgres-pv-claim
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: history-db
+spec:
+  ports:
+  - port: 5342
+    targetPort: 5342
+  selector:
+    app: history-db

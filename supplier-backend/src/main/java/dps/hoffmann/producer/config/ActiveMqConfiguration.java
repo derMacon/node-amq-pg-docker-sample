@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.jms.ConnectionFactory;
 import java.util.Arrays;
 
+/**
+ * Configuration regarding the active mq broker service (jms)
+ */
 @Configuration
 @EnableJms
 @EnableTransactionManagement
@@ -73,23 +76,25 @@ public class ActiveMqConfiguration {
         return jmsTemplate;
     }
 
+    // if needed it possible to launch a second parallel topic with the following two methods
+    /*
+    @Bean
+    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(
+            ConnectionFactory connectionFactory) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setPubSubDomain(true);
+        factory.setConnectionFactory(connectionFactory);
+        return factory;
+    }
 
-//    @Bean
-//    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(
-//            ConnectionFactory connectionFactory) {
-//        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-//        factory.setPubSubDomain(true);
-//        factory.setConnectionFactory(connectionFactory);
-//        return factory;
-//    }
-//
-//    @Bean(name="topicTemplate")
-//    public JmsTemplate topicTemplate() {
-//        JmsTemplate jmsTemplate = new JmsTemplate();
-//        jmsTemplate.setConnectionFactory(cachingConnectionFactory());
-//        jmsTemplate.setPubSubDomain(true);
-//        return jmsTemplate;
-//    }
+    @Bean(name="topicTemplate")
+    public JmsTemplate topicTemplate() {
+        JmsTemplate jmsTemplate = new JmsTemplate();
+        jmsTemplate.setConnectionFactory(cachingConnectionFactory());
+        jmsTemplate.setPubSubDomain(true);
+        return jmsTemplate;
+    }
+     */
 
 
 }
